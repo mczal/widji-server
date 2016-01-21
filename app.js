@@ -6,6 +6,7 @@ var express = require("express"),
 
 var entryModel = require("./model/entry.js");
 var nextCustomerModel = require("./model/nextCustomer.js");
+var loginModel = require("./model/login.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -106,9 +107,9 @@ connect.prototype.configureExpress = function(connection) {
 
 
       app.use('/radAPIeon', router);
-
 			var entry = new entryModel (router,connection);
 			var nextCustomer = new nextCustomerModel(router,connection);
+			var login = new loginModel(router,connection);
       self.startServer();
 };
 
