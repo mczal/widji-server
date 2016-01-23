@@ -51,7 +51,42 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
                                       if(err){
                                         res.json({"message":"err.. error in updating lastentrycounterqueue"});
                                       }else{
-                                        res.json({"message":"Success bro congrats","nomor_antrian":qNum,"category":catName});
+                                        connection.query("update `counter` set id_queue="+idQRtn+" where id_counter="+idCounter,function(err,rows){
+                                          if(err){
+                                            res.json({"message":"err.. error in update counter serving queue"});
+                                          }else{
+                                            connection.query("select value from `count_display`",function(err,rows){
+                                              if(err){
+                                                res.json({"message":"err.. error lookup value from count_display"});
+                                              }else{
+                                                if(rows.length>0){
+                                                  var value=rows[0].value;
+                                                  var query="";
+                                                  if((value+1)>3){
+                                                    query = "update `last_display_queue` set id_queue="+idQRtn+" where id_display="+((value+1)%3)+"";
+                                                  }else{
+                                                    query = "insert into `last_display_queue` (id_queue) values ("+idQRtn+")";
+                                                  }
+                                                  connection.query(query,function(err,rows){
+                                                    if(err){
+                                                      res.json({"message":"err.. error in query -> "+query});
+                                                    }else{
+                                                      connection.query("update `count_display` set value="+(value+1)+" where id_count_display=1",function(err,rows){
+                                                        if(err){
+                                                          res.json({"message":"err.. error updating count display value"});
+                                                        }else{
+                                                          res.json({"message":"Success bro congrats","nomor_antrian":qNum,"category":catName});
+                                                        }
+                                                      });
+                                                    }
+                                                  });
+                                                }else{
+                                                  res.json({"message":"err.. no rows in countDisplay"});
+                                                }
+                                              }
+                                            });
+                                          }
+                                        });
                                       }
                                     });
                                   }else{
