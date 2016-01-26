@@ -63,7 +63,11 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
                                                   var value=rows[0].value;
                                                   var query="";
                                                   if((value+1)>3){
-                                                    query = "update `last_display_queue` set id_queue="+idQRtn+" where id_display="+((value+1)%3)+"";
+                                                    var tmpVal = (value+1)%3;
+                                                    if(tmpVal==0){
+                                                      tmpVal=1;
+                                                    }
+                                                    query = "update `last_display_queue` set id_queue="+idQRtn+" where id_display="+tmpVal+"";
                                                   }else{
                                                     query = "insert into `last_display_queue` (id_queue) values ("+idQRtn+")";
                                                   }

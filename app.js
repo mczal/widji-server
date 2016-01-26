@@ -7,7 +7,9 @@ var express = require("express"),
 var entryModel = require("./model/entry.js");
 var nextCustomerModel = require("./model/nextCustomer.js");
 var loginModel = require("./model/login.js");
-var queueByCategoryLookupModel = require("./model/queueByCategoryLookup.js")
+var queueByCategoryLookupModel = require("./model/queueByCategoryLookup.js");
+var displayModel = require("./model/display.js");
+var recallModel = require("./model/recall.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -112,6 +114,8 @@ connect.prototype.configureExpress = function(connection) {
 			var nextCustomer = new nextCustomerModel(router,connection);
 			var login = new loginModel(router,connection);
 			var queueByCategoryLookup = new queueByCategoryLookupModel(router,connection);
+			var display = new displayModel(router,connection);
+			var recall = new recallModel(router,connection);
       self.startServer();
 };
 
