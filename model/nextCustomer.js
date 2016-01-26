@@ -65,7 +65,7 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
                                                   if((value+1)>3){
                                                     var tmpVal = (value+1)%3;
                                                     if(tmpVal==0){
-                                                      tmpVal=1;
+                                                      tmpVal=3;
                                                     }
                                                     query = "update `last_display_queue` set id_queue="+idQRtn+" where id_display="+tmpVal+"";
                                                   }else{
