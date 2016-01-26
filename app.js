@@ -121,7 +121,7 @@ connect.prototype.configureExpress = function(connection) {
 
 connect.prototype.startServer = function() {
 	// body...
-	app.listen(3000,function(){
+	app.listen(3030,function(){
           console.log("magic \"widji\" happend");
       });
 };
