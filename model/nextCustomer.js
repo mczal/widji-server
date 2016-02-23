@@ -10,12 +10,12 @@ var self = this;
 nextCustomer.prototype.handleRoutes=function(router,connection){
   router.post("/nextCustomer",function(req,res){
     var catName = req.body.category;
-    var ipCounter = req.body.myIp;
+    var username = req.body.username;
     if(catName==null || catName==undefined || catName==""){
       res.json({"message":"err.. error no catName req received"});
     }else{
-      if(ipCounter==null || ipCounter==undefined || ipCounter==""){
-        res.json({"message":"err.. error no ip req received"});
+      if(username==null || username==undefined || username==""){
+        res.json({"message":"err.. error no username req received"});
       }else{
         //here
         connection.query("select id_cat from `category` where cat_name='"+catName+"'",function(err,rows){
@@ -24,6 +24,9 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
           }else{
             if(rows.length>0){
               var idCat = rows[0].id_cat;
+              /* request counter number from given ip (ip should have been registered with one and only one counter number).. !!
+              *  if not registered -> ...
+              */
               connection.query("select id_counter from `counter` where ip_addrs='"+ipCounter+"'",function(err,rows){
                 if(err){
                   res.json({"message":"err.. error in lookup idCt with ipAddrss"});
@@ -47,10 +50,12 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
                                 }else{
                                   if(rows.length>0){
                                     var lastVal = rows[0].value;
+                                    //update jumlah antrian yang telah masuk pada counter-x
                                     connection.query("update `last_entry_counter_queue` set value="+(lastVal+1)+" where id_counter="+idCounter,function(err,rows){
                                       if(err){
                                         res.json({"message":"err.. error in updating lastentrycounterqueue"});
                                       }else{
+                                        //setting id antrian yang saat ini / terakhir di layani oleh counter-x
                                         connection.query("update `counter` set id_queue="+idQRtn+" where id_counter="+idCounter,function(err,rows){
                                           if(err){
                                             res.json({"message":"err.. error in update counter serving queue"});
@@ -59,6 +64,7 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
                                               if(err){
                                                 res.json({"message":"err.. error lookup value from count_display"});
                                               }else{
+                                                //round robin section by 3 display..
                                                 if(rows.length>0){
                                                   var value=rows[0].value;
                                                   var query="";
@@ -71,10 +77,12 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
                                                   }else{
                                                     query = "insert into `last_display_queue` (id_queue) values ("+idQRtn+")";
                                                   }
+                                                  //end of round robin section
                                                   connection.query(query,function(err,rows){
                                                     if(err){
                                                       res.json({"message":"err.. error in query -> "+query});
                                                     }else{
+                                                      //updating count_disply for round robin section above..
                                                       connection.query("update `count_display` set value="+(value+1)+" where id_count_display=1",function(err,rows){
                                                         if(err){
                                                           res.json({"message":"err.. error updating count display value"});

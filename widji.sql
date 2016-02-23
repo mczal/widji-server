@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2016 at 12:21 PM
+-- Generation Time: Feb 23, 2016 at 02:13 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `counter` (
   `ip_addrs` varchar(15) DEFAULT NULL,
   `counter_name` varchar(5) NOT NULL,
   `statusz` tinyint(4) NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
   `id_queue` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
@@ -59,14 +60,14 @@ CREATE TABLE IF NOT EXISTS `counter` (
 -- Dumping data for table `counter`
 --
 
-INSERT INTO `counter` (`id_counter`, `ip_addrs`, `counter_name`, `statusz`, `id_queue`) VALUES
-(1, NULL, '1', 0, NULL),
-(2, NULL, '2', 0, NULL),
-(3, NULL, '3', 0, NULL),
-(4, NULL, '4', 0, NULL),
-(5, NULL, '5', 0, NULL),
-(6, NULL, '6', 0, NULL),
-(7, NULL, '7', 0, NULL);
+INSERT INTO `counter` (`id_counter`, `ip_addrs`, `counter_name`, `statusz`, `id_user`, `id_queue`) VALUES
+(1, NULL, '1', 0, NULL, NULL),
+(2, NULL, '2', 0, NULL, NULL),
+(3, NULL, '3', 0, NULL, NULL),
+(4, NULL, '4', 0, NULL, NULL),
+(5, NULL, '5', 0, NULL, NULL),
+(6, NULL, '6', 0, NULL, NULL),
+(7, NULL, '7', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -85,6 +86,25 @@ CREATE TABLE IF NOT EXISTS `count_display` (
 
 INSERT INTO `count_display` (`id_count_display`, `value`) VALUES
 (1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `display`
+--
+
+CREATE TABLE IF NOT EXISTS `display` (
+  `id_display` int(11) NOT NULL,
+  `display_name` varchar(50) NOT NULL,
+  `value` varchar(100) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `display`
+--
+
+INSERT INTO `display` (`id_display`, `display_name`, `value`) VALUES
+(1, 'running text', 'this is original running text');
 
 -- --------------------------------------------------------
 
@@ -155,6 +175,30 @@ CREATE TABLE IF NOT EXISTS `queue_rtn` (
   `statusz` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role`
+--
+
+CREATE TABLE IF NOT EXISTS `role` (
+  `role_id` int(11) NOT NULL,
+  `role_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id_user` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `id_role` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -169,13 +213,19 @@ ALTER TABLE `category`
 -- Indexes for table `counter`
 --
 ALTER TABLE `counter`
-  ADD PRIMARY KEY (`id_counter`), ADD UNIQUE KEY `ip_addrs` (`ip_addrs`);
+  ADD PRIMARY KEY (`id_counter`), ADD UNIQUE KEY `ip_addrs` (`ip_addrs`), ADD KEY `id_user` (`id_user`);
 
 --
 -- Indexes for table `count_display`
 --
 ALTER TABLE `count_display`
   ADD PRIMARY KEY (`id_count_display`);
+
+--
+-- Indexes for table `display`
+--
+ALTER TABLE `display`
+  ADD PRIMARY KEY (`id_display`);
 
 --
 -- Indexes for table `last_display_queue`
@@ -202,6 +252,12 @@ ALTER TABLE `queue_rtn`
   ADD PRIMARY KEY (`id_queue`), ADD KEY `id_counter` (`id_cat`), ADD KEY `id_counter_2` (`id_counter`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id_user`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -221,6 +277,11 @@ ALTER TABLE `counter`
 ALTER TABLE `count_display`
   MODIFY `id_count_display` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `display`
+--
+ALTER TABLE `display`
+  MODIFY `id_display` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `last_display_queue`
 --
 ALTER TABLE `last_display_queue`
@@ -231,8 +292,19 @@ ALTER TABLE `last_display_queue`
 ALTER TABLE `queue_rtn`
   MODIFY `id_queue` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `counter`
+--
+ALTER TABLE `counter`
+ADD CONSTRAINT `counter_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
 
 --
 -- Constraints for table `last_entry_cat_queue`

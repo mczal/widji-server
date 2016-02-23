@@ -113,7 +113,7 @@ connect.prototype.configureExpress = function(connection) {
       app.use('/radAPIeon', router);
 			var entry = new entryModel (router,connection);
 			var nextCustomer = new nextCustomerModel(router,connection);
-			var login = new loginModel(router,connection);
+			var login = new loginModel(router,connection,md5);
 			var queueByCategoryLookup = new queueByCategoryLookupModel(router,connection);
 			var display = new displayModel(router,connection);
 			var recall = new recallModel(router,connection);
