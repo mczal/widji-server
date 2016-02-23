@@ -11,6 +11,7 @@ var queueByCategoryLookupModel = require("./model/queueByCategoryLookup.js");
 var displayModel = require("./model/display.js");
 var recallModel = require("./model/recall.js");
 var checkIpModel = require("./model/checkIp.js");
+var setAndGetTextModel = require("./model/setAndGetText.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -118,6 +119,7 @@ connect.prototype.configureExpress = function(connection) {
 			var display = new displayModel(router,connection);
 			var recall = new recallModel(router,connection);
 			var checkIp = new checkIpModel(router,connection);
+			var setAndGetText = new setAndGetTextModel(router,connection);
       self.startServer();
 };
 
