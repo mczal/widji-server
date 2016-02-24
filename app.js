@@ -12,6 +12,9 @@ var displayModel = require("./model/display.js");
 var recallModel = require("./model/recall.js");
 var checkIpModel = require("./model/checkIp.js");
 var setAndGetTextModel = require("./model/setAndGetText.js");
+var createUserModel = require("./model/createUser.js");
+var editAccountModel = require("./model/editAccount.js");
+var testJsonModel = require("./model/testJson.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -120,6 +123,9 @@ connect.prototype.configureExpress = function(connection) {
 			var recall = new recallModel(router,connection);
 			var checkIp = new checkIpModel(router,connection);
 			var setAndGetText = new setAndGetTextModel(router,connection);
+			var createUser = new createUserModel(router,connection,md5);
+			var editAccount = new editAccountModel(router,connection,md5);
+			var testJson = new testJsonModel(router,connection);
       self.startServer();
 };
 

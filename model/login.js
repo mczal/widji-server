@@ -34,7 +34,7 @@ login.prototype.handleRoutes=function(router,connection,md5){
                   if(password == rows[0].password){
                     var idUser = rows[0].id_user;
                     //copy here
-                    connection.query("select id_counter,ip_addrs,statusz from `counter` where counter_name = '"+myCounter+"'",function(err,rows){
+                    connection.query("select id_counter,ip_addrs,statusz,user_id from `counter` where counter_name = '"+myCounter+"'",function(err,rows){
                       if(err){
                         res.json({"message":"err.. error in look up counter with given myCounter req"});
                       }else{
@@ -42,16 +42,20 @@ login.prototype.handleRoutes=function(router,connection,md5){
                           var idCtr = rows[0].id_counter;
                           //checking IF THERE IS IP REGISTERED IN COUNTER GIVEN
                           if(rows[0].ip_addrs==null || rows[0].ip_addrs==undefined || rows[0].ip_addrs==""){
-                            if(rows[0].statusz==0){
-                              connection.query("update `counter` set ip_addrs='"+myIp+"',statusz=1,id_user="+idUser+" user where id_counter="+idCtr,function(err,rows){
-                                if(err){
-                                  res.json({"message":"err.. error in updating counter"});
-                                }else{
-                                  res.json({"message":"success registering ip with counter bro congrats"});
-                                }
-                              });
+                            if(rows[0].user_id==null || rows[0].user_id==undefined || rows[0].user_id==""){
+                              if(rows[0].statusz==0){
+                                connection.query("update `counter` set ip_addrs='"+myIp+"',statusz=1,id_user="+idUser+" user where id_counter="+idCtr,function(err,rows){
+                                  if(err){
+                                    res.json({"message":"err.. error in updating counter"});
+                                  }else{
+                                    res.json({"message":"success registering ip with counter bro congrats"});
+                                  }
+                                });
+                              }else{
+                                res.json({"message":"err.. this given counter has set it stat to active [ststz->1]"});
+                              }
                             }else{
-                              res.json({"message":"err.. this given counter has set it stat to active [ststz->1]"});
+                              res.json({"message":"err.. this given counter has set it user"});
                             }
                           }else{
                             res.json({"message":"err.. there's already registered IP in counter given [ip_addrs]"});
