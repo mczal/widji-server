@@ -15,6 +15,9 @@ var setAndGetTextModel = require("./model/setAndGetText.js");
 var createUserModel = require("./model/createUser.js");
 var editAccountModel = require("./model/editAccount.js");
 var testJsonModel = require("./model/testJson.js");
+var deleteUserCounterModel = require("./model/deleteUserCounter.js");
+var getUsersModel = require("./model/getUsers.js");
+var logoutModel = require("./model/logout.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -122,10 +125,13 @@ connect.prototype.configureExpress = function(connection) {
 			var display = new displayModel(router,connection);
 			var recall = new recallModel(router,connection);
 			var checkIp = new checkIpModel(router,connection);
-			var setAndGetText = new setAndGetTextModel(router,connection);
+			var setAndGetText = new setAndGetTextModel(router,connection,md5); //notdone
 			var createUser = new createUserModel(router,connection,md5);
 			var editAccount = new editAccountModel(router,connection,md5);
 			var testJson = new testJsonModel(router,connection);
+			var deleteUserCounter = new deleteUserCounterModel(router,connection,md5);
+			var getUsers = new getUsersModel(router,connection,md5);
+			var logout = new logoutModel(router,connection,md5);
       self.startServer();
 };
 

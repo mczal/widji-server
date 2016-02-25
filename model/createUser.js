@@ -10,7 +10,7 @@ var self=this;
 createUser.prototype.handleRoutes = function(router,connection,md5){
   router.post('/createUser',function(req,res){
     var usernameAdmin = req.body.usernameAdmin;
-    var password = req.body.password;
+    var password = md5(req.body.password);
     var newUsername = req.body.newUsername;
     var newPassword = md5(req.body.newPassword);
     var role = req.body.role;
@@ -34,41 +34,44 @@ createUser.prototype.handleRoutes = function(router,connection,md5){
                   res.json({"message":"err.. error in selecting user"});
                 }else{
                   if(rows.length>0){
-                    var idUser = rows[0].id_user;
-                    var password = rows[0].password;
-                    var idRole = rows[0].id_role;
-                    connection.query("select role_name from `role` where id_role="+idRole,function(err,rows){
-                      if(err){
-                        res.json({"message":"err.. error on lookup role"});
-                      }else{
-                        if(rows.length>0){
-                          if(rows[0].role_name=='admin'){
-                            connection.query("select id_role from `role` where role_name='"+role+"'",function(err,rows){
-                              if(err){
-                                res.json({"message":"err.. error on selecting role from field"});
-                              }else{
-                                if(rows.length>0){
-                                  var newRoleId = rows[0].id_role;
-                                  connection.query("insert into `user` (username,password,id_role) values('"+newUsername+"','"+newPassword+"',"+newRoleId+")",function(err,rows){
-                                    if(err){
-                                      res.json({"message":"err.. error on inserting new user"});
-                                    }else{
-                                      res.json({"message":"success in creating new "+role+" account","username":newUsername});
-                                    }
-                                  });
-                                }else{
-                                  res.json({"message":"err.. no rows in given role field"});
-                                }
-                              }
-                            });
-                          }else{
-                            res.json({"message":"err... you didn't authorized to do this action"});
-                          }
+                    if(password == rows[0].password){
+                      var idUser = rows[0].id_user;
+                      var idRole = rows[0].id_role;
+                      connection.query("select role_name from `role` where id_role="+idRole,function(err,rows){
+                        if(err){
+                          res.json({"message":"err.. error on lookup role"});
                         }else{
-                          res.json({"message":"err.. no rows on given role"});
+                          if(rows.length>0){
+                            if(rows[0].role_name=='admin'){
+                              connection.query("select id_role from `role` where role_name='"+role+"'",function(err,rows){
+                                if(err){
+                                  res.json({"message":"err.. error on selecting role from field"});
+                                }else{
+                                  if(rows.length>0){
+                                    var newRoleId = rows[0].id_role;
+                                    connection.query("insert into `user` (username,password,id_role) values('"+newUsername+"','"+newPassword+"',"+newRoleId+")",function(err,rows){
+                                      if(err){
+                                        res.json({"message":"err.. error on inserting new user"});
+                                      }else{
+                                        res.json({"message":"success in creating new "+role+" account","username":newUsername});
+                                      }
+                                    });
+                                  }else{
+                                    res.json({"message":"err.. no rows in given role field"});
+                                  }
+                                }
+                              });
+                            }else{
+                              res.json({"message":"err... you didn't authorized to do this action"});
+                            }
+                          }else{
+                            res.json({"message":"err.. no rows on given role"});
+                          }
                         }
-                      }
-                    });
+                      });
+                    }else{
+                      res.json({"message":"wrong wrong wrong"});
+                    }
                   }else{
                     res.json({"message":"err.. no rows on given username"});
                   }

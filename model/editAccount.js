@@ -5,6 +5,8 @@ function editAccount(router,connection,md5){
   self.handleRoutes(router,connection,md5);
 }
 
+var self=this;
+
 editAccount.prototype.handleRoutes = function(router,connection,md5){
   router.post('/editAccount',function(req,res){
     var usernameLocal = req.body.usernameLocal;
