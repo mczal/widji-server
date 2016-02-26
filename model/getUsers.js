@@ -32,7 +32,7 @@ getUsers.prototype.handleRoutes = function(router,connection,md5){
                     if(rows.length>0){
                       if(rows[0].role_name=='admin'){
                         // TO DO
-                        connection.query("select user.username,role.role_name from `user` join `role` on user.id_role=role.id_role",function(err,rows){
+                        connection.query("select user.username,role.role_name from `user` join `role` on user.id_role=role.id_role order by user.id_role",function(err,rows){
                           if(err){
                             res.json({"message":"err.. error on selecting username join with role"});
                           }else{
