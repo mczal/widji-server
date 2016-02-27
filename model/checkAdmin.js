@@ -1,6 +1,6 @@
 //THIS IS A TEMPLATE MODEL FOR CHECKING ADMIN
-var username = req.body.username;
-var password = md5(req.body.password);
+var username = req.body.usernameAdmin;
+var password = md5(req.body.passwordAdmin);
 if(username==null || username==undefined || username==''){
   res.json({"message":"err.. no params usrname rec"});
 }else{

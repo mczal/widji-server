@@ -10,8 +10,8 @@ var self=this;
 setAndGetText.prototype.handleRoutes = function(router,connection,md5){
   router.post('/setAndGetText',function(req,res){
     var text = req.body.text;
-    var username = req.body.password;
-    var password = md5(req.body.password);
+    var username = req.body.usernameAdmin;
+    var password = md5(req.body.passwordAdmin);
     connection.query("select id_user,password,id_role from `user` where username='"+username+"'",function(err,rows){
       if(err){
         res.json({"message":"err.. error in selecting user"});

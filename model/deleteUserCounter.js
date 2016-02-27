@@ -9,8 +9,8 @@ var self=this;
 
 deleteUserCounter.prototype.handleRoutes = function(router,connection,md5){
   router.post('/deleteUserCounter',function(req,res){
-    var username = req.body.username;
-    var password = md5(req.body.password);
+    var username = req.body.usernameAdmin;
+    var password = md5(req.body.passwordAdmin);
     var usernameDelete = req.body.usernameDelete;
     if(username==null || username==undefined || username==''){
       res.json({"message":"err.. no params usrnm rec"});

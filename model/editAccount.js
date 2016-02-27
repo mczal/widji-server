@@ -9,10 +9,10 @@ var self=this;
 
 editAccount.prototype.handleRoutes = function(router,connection,md5){
   router.post('/editAccount',function(req,res){
-    var usernameLocal = req.body.usernameLocal;
-    var passwordLocal = md5(req.body.passwordLocal);
-    var usernameType = req.body.usernameType;
-    var passwordType = md5(req.body.passwordType);
+    var usernameLocal = req.body.usernameAdminLocal;
+    var passwordLocal = md5(req.body.passwordAdminLocal);
+    var usernameType = req.body.usernameAdminType;
+    var passwordType = md5(req.body.passwordAdminType);
     var newPassword = md5(req.body.newPassword);
     var confirmation = md5(req.body.confirmation);
     if(usernameLocal==null || usernameLocal==undefined || usernameLocal==""){

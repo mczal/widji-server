@@ -9,8 +9,8 @@ var self=this;
 
 getUsers.prototype.handleRoutes = function(router,connection,md5){
   router.post('/getUsers',function(req,res){
-    var username = req.body.username;
-    var password = md5(req.body.password);
+    var username = req.body.usernameAdmin;
+    var password = md5(req.body.passwordAdmin);
     if(username==null || username==undefined || username==''){
         res.json({"message":"err.. error no params username rec"});
     }else{
