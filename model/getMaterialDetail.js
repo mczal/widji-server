@@ -8,7 +8,7 @@ function getMaterialDetail(router,connection){
 var self=this;
 
 getMaterialDetail.prototype.handleRoutes = function(router,connection){
-  router.post('/getMaterialDetail',functionl(req,res){
+  router.post('/getMaterialDetail',function(req,res){
     var idMaterial = req.body.idMaterial;
     if(idMaterial==null || idMaterial==undefined || idMaterial==""){
       res.json({"message":"err.. error no params"});

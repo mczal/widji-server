@@ -8,7 +8,7 @@ function getMaterials(router,connection){
 var self=this;
 
 getMaterials.prototype.handleRoutes = function(router,connection){
-  router.post('/getMaterials',functionl(req,res){
+  router.post('/getMaterials',function(req,res){
     connection.query("select * from `material`",function(err,rows){
       if(err){
         res.json({"message":"err.. error on selecting material"});
