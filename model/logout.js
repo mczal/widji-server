@@ -20,9 +20,10 @@ logout.prototype.handleRoutes = function(router,connection,md5){
         }else{
           if(rows.length>0){
             var idUser = rows[0].id_user;
-            connection.query("delete `session` where session_code='"+session+"' and id_user="+idUser,function(err,rows){
+            var query = "delete from `session` where session_code='"+session+"' and id_user="+idUser;
+            connection.query(query,function(err,rows){
               if(err){
-                res.json({"message":"Err.. error on delete session"});
+                res.json({"message":"Err.. error on delete session","query":query});
               }else{
                 res.json({"message":"success deleting session"});
               }

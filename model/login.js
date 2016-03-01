@@ -1,5 +1,13 @@
 var mysql = require("mysql");
 
+function generateUniqueCode(){
+    var text = "";
+    var possible = "QWERTYUIOPasdfghjklZXCVbnm,{:.]?}+_)(1234567890)}";
+    for( var i=0; i < 10; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
+
 function login(router,connection,md5){
   var self = this;
   self.handleRoutes(router,connection,md5);
@@ -16,7 +24,6 @@ login.prototype.handleRoutes=function(router,connection,md5){
     if(myIp==null || myIp==undefined || myIp==""){
       res.json({"message":"err.. error no ip req received"});
     }else{
-      //here
       if(myCounter==null || myCounter==undefined || myCounter==""){
         res.json({"message":"err.. error noctr req received"});
       }else{
@@ -49,7 +56,32 @@ login.prototype.handleRoutes=function(router,connection,md5){
                                   if(err){
                                     res.json({"message":"err.. error in updating counter","query":query});
                                   }else{
-                                    res.json({"message":"success registering ip with counter bro congrats"});
+                                    //success #1 herehere
+                                    connection.query("select id_session from `session` where id_user="+idUser,function(err,rows){
+                                      if(err){
+                                        res.json({"message":"error lookup session"});
+                                      }else{
+                                        var sessionCode = generateUniqueCode();
+                                        if(rows.length>0){
+                                          connection.query("update `session` set session_code='"+sessionCode+"' where id_user="+idUser,function(err,rows){
+                                            if(err){
+                                              res.json({"message":"Err.. error on updating sesion"});
+                                            }else{
+                                              res.json({"message":"success registering ip with counter bro congrats","session":sessionCode});
+                                            }
+                                          });
+                                        }else{
+                                          connection.query("insert into `session` (session_code,id_user) values('"+sessionCode+"',"+idUser+")",function(err,rows){
+                                            if(err){
+                                              res.json({"message":"err.. error inserting new session"});
+                                            }else{
+                                              res.json({"message":"success registering ip with counter bro congrats","session":sessionCode});
+                                            }
+                                          });
+                                        }
+                                      }
+                                    });
+                                    //endherehere
                                   }
                                 });
                               }else{
@@ -67,7 +99,32 @@ login.prototype.handleRoutes=function(router,connection,md5){
                                     if(err){
                                       res.json({"message":"err.. error in updating counter","query":query});
                                     }else{
-                                      res.json({"message":"success registering ip with counter bro congrats","add":"2nd condition"});
+                                      //success #2 herehere
+                                      connection.query("select id_session from `session` where id_user="+idUser,function(err,rows){
+                                        if(err){
+                                          res.json({"message":"error lookup session"});
+                                        }else{
+                                          var sessionCode = generateUniqueCode();
+                                          if(rows.length>0){
+                                            connection.query("update `session` set session_code='"+sessionCode+"' where id_user="+idUser,function(err,rows){
+                                              if(err){
+                                                res.json({"message":"Err.. error on updating sesion"});
+                                              }else{
+                                                res.json({"message":"success registering ip with counter bro congrats","session":sessionCode,"add":"2nd condition"});
+                                              }
+                                            });
+                                          }else{
+                                            connection.query("insert into `session` (session_code,id_user) values('"+sessionCode+"',"+idUser+")",function(err,rows){
+                                              if(err){
+                                                res.json({"message":"err.. error inserting new session"});
+                                              }else{
+                                                res.json({"message":"success registering ip with counter bro congrats","session":sessionCode,"add":"2nd condition"});
+                                              }
+                                            });
+                                          }
+                                        }
+                                      });
+                                      //endherehere
                                     }
                                   });
                                 }else{
