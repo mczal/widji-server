@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2016 at 06:13 PM
+-- Generation Time: Mar 01, 2016 at 09:22 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `counter` (
 
 INSERT INTO `counter` (`id_counter`, `ip_addrs`, `counter_name`, `statusz`, `id_user`, `id_queue`) VALUES
 (1, NULL, '1', 0, NULL, NULL),
-(2, NULL, '2', 0, NULL, NULL),
+(2, '1', '2', 1, 2, NULL),
 (3, NULL, '3', 0, NULL, NULL),
 (4, NULL, '4', 0, NULL, NULL),
 (5, NULL, '5', 0, NULL, NULL),
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `display` (
 --
 
 INSERT INTO `display` (`id_display`, `display_name`, `value`) VALUES
-(1, 'running text', 'this is original running text');
+(1, 'running text', 'abcde');
 
 -- --------------------------------------------------------
 
@@ -197,6 +197,39 @@ INSERT INTO `role` (`id_role`, `role_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `session`
+--
+
+CREATE TABLE IF NOT EXISTS `session` (
+  `id_session` int(11) NOT NULL,
+  `session_code` varchar(15) NOT NULL,
+  `id_user` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `session`
+--
+
+INSERT INTO `session` (`id_session`, `session_code`, `id_user`) VALUES
+(1, 'W]VmEmg)8Y', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `type`
+--
+
+CREATE TABLE IF NOT EXISTS `type` (
+  `id_type` int(11) NOT NULL,
+  `type_name` varchar(100) NOT NULL,
+  `smallest_unit` varchar(30) NOT NULL,
+  `stock_per_unit` int(11) NOT NULL,
+  `stock_type` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -205,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
   `id_role` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
@@ -214,7 +247,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id_user`, `username`, `password`, `id_role`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1),
 (2, 'user1', '24c9e15e52afc47c225b757e7bee1f9d', 2),
-(4, 'admin2', 'c84258e9c39059a89ab77d846ddab909', 1);
+(4, 'admin2', 'c84258e9c39059a89ab77d846ddab909', 1),
+(5, 'adminTest', '72adc15352810c6d960fea7edb398c77', 1),
+(6, 'user2', '7e58d63b60197ceb55a1c487989a3720', 2);
 
 --
 -- Indexes for dumped tables
@@ -275,10 +310,22 @@ ALTER TABLE `role`
   ADD PRIMARY KEY (`id_role`);
 
 --
+-- Indexes for table `session`
+--
+ALTER TABLE `session`
+  ADD PRIMARY KEY (`id_session`), ADD KEY `id_user` (`id_user`);
+
+--
+-- Indexes for table `type`
+--
+ALTER TABLE `type`
+  ADD PRIMARY KEY (`id_type`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id_user`), ADD KEY `id_role` (`id_role`);
+  ADD PRIMARY KEY (`id_user`), ADD UNIQUE KEY `username` (`username`), ADD KEY `id_role` (`id_role`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -320,10 +367,20 @@ ALTER TABLE `queue_rtn`
 ALTER TABLE `role`
   MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `session`
+--
+ALTER TABLE `session`
+  MODIFY `id_session` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `type`
+--
+ALTER TABLE `type`
+  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- Constraints for dumped tables
 --

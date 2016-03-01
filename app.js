@@ -18,6 +18,7 @@ var testJsonModel = require("./model/testJson.js");
 var deleteUserCounterModel = require("./model/deleteUserCounter.js");
 var getUsersModel = require("./model/getUsers.js");
 var logoutModel = require("./model/logout.js");
+var loginAdminModel = require("./model/loginAdmin.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -132,6 +133,7 @@ connect.prototype.configureExpress = function(connection) {
 			var deleteUserCounter = new deleteUserCounterModel(router,connection,md5);
 			var getUsers = new getUsersModel(router,connection,md5);
 			var logout = new logoutModel(router,connection,md5);
+			var loginAdmin = new loginAdminModel(router,connection,md5);
       self.startServer();
 };
 
