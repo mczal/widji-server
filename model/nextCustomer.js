@@ -10,14 +10,14 @@ var self = this;
 nextCustomer.prototype.handleRoutes=function(router,connection){
   router.post("/nextCustomer",function(req,res){
     var catName = req.body.category;
-    var username = req.body.username;
+    var session = req.body.session;
     var ipCounter = req.body.ipCounter;
     //additional if needed , "add password field and authentication"
     if(catName==null || catName==undefined || catName==""){
       res.json({"message":"err.. error no catName req received"});
     }else{
-      if(username==null || username==undefined || username==""){
-        res.json({"message":"err.. error no username req received"});
+      if(session==null || session==undefined || session==""){
+        res.json({"message":"err.. error no session req received"});
       }else{
         if(ipCounter==null || ipCounter==undefined || ipCounter==""){
           res.json({"message":"err.. error no ipCounter req received"});
@@ -32,9 +32,9 @@ nextCustomer.prototype.handleRoutes=function(router,connection){
                 *  ip combined with username
                 *  if not registered -> ...
                 */
-                connection.query("select id_user from `user` where username='"+username+"'",function(err,rows){
+                connection.query("select id_user from `session` where session_code='"+session+"'",function(err,rows){
                   if(err){
-                    res.json({"message":"err.. error in username selection"});
+                    res.json({"message":"err.. error in session selection"});
                   }else{
                     if(rows.length>0){
                       var idUser = rows[0].id_user;

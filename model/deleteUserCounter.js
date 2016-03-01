@@ -50,7 +50,7 @@ deleteUserCounter.prototype.handleRoutes = function(router,connection,md5){
                                         if(rows.length>0){
                                           if(rows[0].role_name == 'user'){
                                             //TO DO
-                                            connection.query("delete from `user` where username='"+username+"' and password='"+password+"'",function(err,rows){
+                                            connection.query("delete from `user` where username='"+usernameDelete+"'",function(err,rows){
                                               if(err){
                                                 res.json({"message":"err.. error in deleting user"});
                                               }else{

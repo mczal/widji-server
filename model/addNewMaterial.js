@@ -8,7 +8,7 @@ function addNewType(router,connection){
 var self=this;
 
 addNewType.prototype.handleRoutes = function(router,connection){
-  router.post('/addNewType',function(req,res){
+  router.post('/addNewMaterial',function(req,res){
     var session = req.body.session;
     var kodeBahan = req.body.kodeBahan;
     var namaBahan = req.body.namaBahan;
@@ -58,7 +58,13 @@ addNewType.prototype.handleRoutes = function(router,connection){
                                   if(rows.length>0){
                                     var roleName = rows[0].role_name;
                                     if(roleName == 'admin'){
-                                      
+                                      connection.query("insert into `material`(material_code,material_name,smallest_unit,stock_per_unit,unit_name,quantity) values('"+kodeBahan+"','"+namaBahan+"','"+satuan+"',"+ukuranPerUnit+",'"+unit+"',"+jumlahStok+")",function(err,rows){
+                                        if(err){
+                                          res.json({"message":"err.. error on inserting new material"});
+                                        }else{
+                                          res.json({"message":"success cuy congrats"});
+                                        }
+                                      });
                                     }else{
                                       res.json({"message":"err.. do not authorize"});
                                     }

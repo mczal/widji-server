@@ -25,7 +25,29 @@ logout.prototype.handleRoutes = function(router,connection,md5){
               if(err){
                 res.json({"message":"Err.. error on delete session","query":query});
               }else{
-                res.json({"message":"success deleting session"});
+                var query = "select role.role_name as role_name from `role` join `user` on role.id_role=user.id_role where user.id_user="+idUser;
+                connection.query(query,function(err,rows){
+                  if(err){
+                    res.json({"message":"Err.. error in selecting role join user"});
+                  }else{
+                    if(rows.length>0){
+                      var roleName = rows[0].role_name;
+                      if(roleName == "user"){
+                        connection.query("update `counter` set statusz=0,id_user=null where id_user="+idUser,function(err,rows){
+                          if(err){
+                            res.json({"message":"err.. error on updating counter"});
+                          }else{
+                            res.json({"message":"success cuuuy"});
+                          }
+                        });
+                      }else{
+                        res.json({"message":"success deleting session","ket":"admin","query":query});
+                      }
+                    }else{
+                      res.json({"message":"err.. no rows"});
+                    }
+                  }
+                });
               }
             });
           }else{

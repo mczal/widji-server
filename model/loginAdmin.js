@@ -60,7 +60,7 @@ loginAdmin.prototype.handleRoutes = function(router,connection,md5){
                                 if(err){
                                   res.json({"message":"err.. error inserting new session"});
                                 }else{
-                                  res.json({"message":"success updating session","session":sessionCode});
+                                  res.json({"message":"success inserting session","session":sessionCode});
                                 }
                               });
                             }

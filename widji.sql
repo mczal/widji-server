@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2016 at 09:22 AM
+-- Generation Time: Mar 01, 2016 at 12:43 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `counter` (
 --
 
 INSERT INTO `counter` (`id_counter`, `ip_addrs`, `counter_name`, `statusz`, `id_user`, `id_queue`) VALUES
-(1, NULL, '1', 0, NULL, NULL),
-(2, '1', '2', 1, 2, NULL),
+(1, '1', '1', 0, NULL, NULL),
+(2, NULL, '2', 0, NULL, NULL),
 (3, NULL, '3', 0, NULL, NULL),
 (4, NULL, '4', 0, NULL, NULL),
 (5, NULL, '5', 0, NULL, NULL),
@@ -164,6 +164,22 @@ INSERT INTO `last_entry_counter_queue` (`id_counter`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `material`
+--
+
+CREATE TABLE IF NOT EXISTS `material` (
+  `id_material` int(11) NOT NULL,
+  `material_code` varchar(10) NOT NULL,
+  `material_name` varchar(100) NOT NULL,
+  `smallest_unit` varchar(30) NOT NULL,
+  `stock_per_unit` int(11) NOT NULL,
+  `unit_name` varchar(30) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `queue_rtn`
 --
 
@@ -204,28 +220,7 @@ CREATE TABLE IF NOT EXISTS `session` (
   `id_session` int(11) NOT NULL,
   `session_code` varchar(15) NOT NULL,
   `id_user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `session`
---
-
-INSERT INTO `session` (`id_session`, `session_code`, `id_user`) VALUES
-(1, 'W]VmEmg)8Y', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `type`
---
-
-CREATE TABLE IF NOT EXISTS `type` (
-  `id_type` int(11) NOT NULL,
-  `type_name` varchar(100) NOT NULL,
-  `smallest_unit` varchar(30) NOT NULL,
-  `stock_per_unit` int(11) NOT NULL,
-  `stock_type` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -298,6 +293,12 @@ ALTER TABLE `last_entry_counter_queue`
   ADD PRIMARY KEY (`id_counter`);
 
 --
+-- Indexes for table `material`
+--
+ALTER TABLE `material`
+  ADD PRIMARY KEY (`id_material`), ADD UNIQUE KEY `kode_bahan` (`material_code`);
+
+--
 -- Indexes for table `queue_rtn`
 --
 ALTER TABLE `queue_rtn`
@@ -314,12 +315,6 @@ ALTER TABLE `role`
 --
 ALTER TABLE `session`
   ADD PRIMARY KEY (`id_session`), ADD KEY `id_user` (`id_user`);
-
---
--- Indexes for table `type`
---
-ALTER TABLE `type`
-  ADD PRIMARY KEY (`id_type`);
 
 --
 -- Indexes for table `user`
@@ -357,6 +352,11 @@ ALTER TABLE `display`
 ALTER TABLE `last_display_queue`
   MODIFY `id_display` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `material`
+--
+ALTER TABLE `material`
+  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `queue_rtn`
 --
 ALTER TABLE `queue_rtn`
@@ -370,12 +370,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `session`
 --
 ALTER TABLE `session`
-  MODIFY `id_session` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `type`
---
-ALTER TABLE `type`
-  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_session` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `user`
 --
