@@ -26,6 +26,12 @@ var editMaterialModel = require("./model/editMaterial.js");
 var geMaterialDetailModel = require("./model/getMaterialDetail.js");
 var getMaterialsModel = require("./model/getMaterials.js");
 
+//product
+var getAllProductsModel = require("./model/getAllProducts.js");
+var getAvailableProductsModel = require("./model/getAvailableProducts.js");
+var addNewProductModel = require("./model/addNewProduct.js");
+var changeAvailabilityProductModel = require("./model/changeAvailabilityProduct.js");
+
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -147,6 +153,11 @@ connect.prototype.configureExpress = function(connection) {
 			var editMaterial = new editMaterialModel(router,connection);
 			var geMaterialDetail = new geMaterialDetailModel(router,connection);
 			var getMaterials = new getMaterialsModel(router,connection);
+
+			var getAllProducts = new getAllProductsModel(router,connection);
+			var getAvailableProducts = new getAvailableProductsModel(router,connection);
+			var addNewProduct = new addNewProductModel(router,connection);
+			var changeAvailabilityProduct = new changeAvailabilityProductModel(router,connection);
       self.startServer();
 };
 
