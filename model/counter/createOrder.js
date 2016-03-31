@@ -10,12 +10,12 @@ var self=this;
 createOrder.prototype.handleRoutes = function(router,connection){
   router.post('/createOrder',function(req,res){
     var sessionCode = req.body.sessionCode;
-    var nama = req.body.nama;
+    var name = req.body.name;
     if(sessionCode == null || sessionCode == undefined || sessionCode == ''){
       res.json({"message":"err.. no params received"});
     }else{
-      if(nama == null || nama == undefined || nama == ''){
-        res.json({"message":"err.. no nama params received"});
+      if(name == null || name == undefined || name == ''){
+        res.json({"message":"err.. no name params received"});
       }else{
         var query = "select role.id_role as id_role from `session` join `user` on session.id_user=user.id_user join role on role.id_role=user.id_role where session.session_code='"+sessionCode+"'";
         connection.query(query,function(err,rows){
@@ -30,7 +30,7 @@ createOrder.prototype.handleRoutes = function(router,connection){
                   var nomorBon = date.getFullYear().toString().substr(2)+""+date.getMonth()+""+date.getDate()+""+date.getHours()+""+date.getMinutes()+""+date.getSeconds()+""+date.getMilliseconds();
                   //res.json({"month":date.getMonth(),"date":date.getDate(),"year":date.getFullYear().toString().substr(2),"milisecond":date.getMilliseconds(),"hour":date.getHours(),"minute":date.getMinutes(),"seconds":date.getSeconds(),"nomorbon":nomorBon});
                   //status = 0 belum dibayar , status = 1 udah dibayar
-                  var q = "insert into `order` (no_bon,status,nama) values('"+nomorBon+"',0,'"+nama+"')";
+                  var q = "insert into `order` (no_bon,status,name) values('"+nomorBon+"',0,'"+name+"')";
                   connection.query(q,function(err,rows){
                     if(err){
                       res.json({"message":"err.. error on inserting into order","query":q});

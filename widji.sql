@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2016 at 05:13 PM
+-- Generation Time: Apr 01, 2016 at 01:14 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -65,7 +65,7 @@ INSERT INTO `counter` (`id_counter`, `ip_addrs`, `counter_name`, `statusz`, `id_
 (2, NULL, '2', 0, NULL, NULL),
 (3, NULL, '3', 0, NULL, NULL),
 (4, NULL, '4', 0, NULL, NULL),
-(5, '10', '5', 1, 2, NULL),
+(5, '10', '5', 1, 2, 4),
 (6, NULL, '6', 0, NULL, NULL),
 (7, NULL, '7', 0, NULL, NULL);
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `count_display` (
 --
 
 INSERT INTO `count_display` (`id_count_display`, `value`) VALUES
-(1, 0);
+(1, 5);
 
 -- --------------------------------------------------------
 
@@ -196,15 +196,16 @@ CREATE TABLE IF NOT EXISTS `order` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` tinyint(4) NOT NULL,
-  `nama` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `nama`) VALUES
-(1, '1623023348541', '2016-03-30 16:34:08', '2016-03-30 16:34:08', 0, 'zahid');
+INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`) VALUES
+(1, '1623023348541', '2016-03-30 16:34:08', '2016-03-30 16:34:08', 0, 'zahid'),
+(2, '163161127909', '2016-03-31 23:11:27', '2016-03-31 23:11:27', 0, 'Mohamad Fahrizal');
 
 -- --------------------------------------------------------
 
@@ -487,7 +488,7 @@ ALTER TABLE `material`
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `order_item`
 --
