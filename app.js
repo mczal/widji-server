@@ -35,6 +35,7 @@ var changeAvailabilityProductModel = require("./model/admin/changeAvailabilityPr
 var createOrderModel = require("./model/counter/createOrder.js");
 var addOrderItemModel = require("./model/counter/addOrderItem.js");
 var getAllOrderItemModel = require("./model/cashier/getAllOrderItem.js");
+var getAllOrdersModel = require("./model/cashier/getAllOrders.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -165,6 +166,7 @@ connect.prototype.configureExpress = function(connection) {
 			var createOrder = new createOrderModel(router,connection);
 			var addOrderItem = new addOrderItemModel(router,connection);
 			var getAllOrderItem = new getAllOrderItemModel(router,connection);
+			var getAllOrders = new getAllOrdersModel(router,connection);
       self.startServer();
 };
 
