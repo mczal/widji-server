@@ -32,6 +32,8 @@ var getAvailableProductsModel = require("./model/getAvailableProducts.js");
 var addNewProductModel = require("./model/addNewProduct.js");
 var changeAvailabilityProductModel = require("./model/changeAvailabilityProduct.js");
 
+var createOrderModel = require("./model/createOrder.js");
+var addOrderItemModel = require("./model/addOrderItem.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -158,6 +160,9 @@ connect.prototype.configureExpress = function(connection) {
 			var getAvailableProducts = new getAvailableProductsModel(router,connection);
 			var addNewProduct = new addNewProductModel(router,connection);
 			var changeAvailabilityProduct = new changeAvailabilityProductModel(router,connection);
+
+			var createOrder = new createOrderModel(router,connection);
+			var addOrderItem = new addOrderItemModel(router,connection);
       self.startServer();
 };
 
