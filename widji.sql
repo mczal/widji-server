@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2016 at 12:43 PM
+-- Generation Time: Mar 31, 2016 at 05:13 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -65,7 +65,7 @@ INSERT INTO `counter` (`id_counter`, `ip_addrs`, `counter_name`, `statusz`, `id_
 (2, NULL, '2', 0, NULL, NULL),
 (3, NULL, '3', 0, NULL, NULL),
 (4, NULL, '4', 0, NULL, NULL),
-(5, NULL, '5', 0, NULL, NULL),
+(5, '10', '5', 1, 2, NULL),
 (6, NULL, '6', 0, NULL, NULL),
 (7, NULL, '7', 0, NULL, NULL);
 
@@ -175,7 +175,102 @@ CREATE TABLE IF NOT EXISTS `material` (
   `stock_per_unit` int(11) NOT NULL,
   `unit_name` varchar(30) NOT NULL,
   `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `material`
+--
+
+INSERT INTO `material` (`id_material`, `material_code`, `material_name`, `smallest_unit`, `stock_per_unit`, `unit_name`, `quantity`) VALUES
+(1, 'abc12test', 'testing katun', 'meter', 200, 'roll', 22);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order`
+--
+
+CREATE TABLE IF NOT EXISTS `order` (
+  `id` int(11) NOT NULL,
+  `no_bon` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` tinyint(4) NOT NULL,
+  `nama` varchar(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `nama`) VALUES
+(1, '1623023348541', '2016-03-30 16:34:08', '2016-03-30 16:34:08', 0, 'zahid');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_item`
+--
+
+CREATE TABLE IF NOT EXISTS `order_item` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_item`
+--
+
+INSERT INTO `order_item` (`id`, `product_id`, `order_id`, `quantity`) VALUES
+(1, 1, 1, 1),
+(2, 2, 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `media` varchar(20) NOT NULL,
+  `size` varchar(20) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `weight` double NOT NULL,
+  `imgbase64` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `category_id`, `media`, `size`, `status`, `weight`, `imgbase64`) VALUES
+(1, 1, 'HVS', 'A3', 0, 1.5, 'loremipsumdolorsitamet'),
+(2, 2, 'HVS', 'A5', 1, 1.231, 'ipsumdolorsitamet'),
+(3, 1, 'Letter', 'A1', 1, 1.33, 'ampunkk');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_category`
+--
+
+CREATE TABLE IF NOT EXISTS `product_category` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_category`
+--
+
+INSERT INTO `product_category` (`id`, `name`, `description`) VALUES
+(1, 'Black and White', NULL),
+(2, 'Full Color', NULL);
 
 -- --------------------------------------------------------
 
@@ -220,7 +315,15 @@ CREATE TABLE IF NOT EXISTS `session` (
   `id_session` int(11) NOT NULL,
   `session_code` varchar(15) NOT NULL,
   `id_user` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `session`
+--
+
+INSERT INTO `session` (`id_session`, `session_code`, `id_user`) VALUES
+(12, 'a', 1),
+(13, 'hU(TU933I4', 2);
 
 -- --------------------------------------------------------
 
@@ -240,7 +343,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `password`, `id_role`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1),
+(1, 'admin', '24c9e15e52afc47c225b757e7bee1f9d', 1),
 (2, 'user1', '24c9e15e52afc47c225b757e7bee1f9d', 2),
 (4, 'admin2', 'c84258e9c39059a89ab77d846ddab909', 1),
 (5, 'adminTest', '72adc15352810c6d960fea7edb398c77', 1),
@@ -299,6 +402,30 @@ ALTER TABLE `material`
   ADD PRIMARY KEY (`id_material`), ADD UNIQUE KEY `kode_bahan` (`material_code`);
 
 --
+-- Indexes for table `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `no_bon` (`no_bon`);
+
+--
+-- Indexes for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD PRIMARY KEY (`id`), ADD KEY `product_id` (`product_id`), ADD KEY `order_id` (`order_id`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`), ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `product_category`
+--
+ALTER TABLE `product_category`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `queue_rtn`
 --
 ALTER TABLE `queue_rtn`
@@ -355,7 +482,27 @@ ALTER TABLE `last_display_queue`
 -- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
-  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `order`
+--
+ALTER TABLE `order`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `product_category`
+--
+ALTER TABLE `product_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `queue_rtn`
 --
@@ -370,7 +517,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `session`
 --
 ALTER TABLE `session`
-  MODIFY `id_session` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `id_session` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -397,6 +544,12 @@ ADD CONSTRAINT `last_entry_cat_queue_ibfk_1` FOREIGN KEY (`id_cat`) REFERENCES `
 --
 ALTER TABLE `last_entry_counter_queue`
 ADD CONSTRAINT `last_entry_counter_queue_ibfk_1` FOREIGN KEY (`id_counter`) REFERENCES `counter` (`id_counter`);
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
 -- Constraints for table `queue_rtn`

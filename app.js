@@ -5,35 +5,36 @@ var express = require("express"),
   http = require('http');
 
 var entryModel = require("./model/entry.js");
-var nextCustomerModel = require("./model/nextCustomer.js");
+var nextCustomerModel = require("./model/counter/nextCustomer.js");
 var loginModel = require("./model/login.js");
-var queueByCategoryLookupModel = require("./model/queueByCategoryLookup.js");
+var queueByCategoryLookupModel = require("./model/counter/queueByCategoryLookup.js");
 var displayModel = require("./model/display.js");
-var recallModel = require("./model/recall.js");
+var recallModel = require("./model/counter/recall.js");
 var checkIpModel = require("./model/checkIp.js");
-var setAndGetTextModel = require("./model/setAndGetText.js");
-var createUserModel = require("./model/createUser.js");
-var editAccountModel = require("./model/editAccount.js");
+var setAndGetTextModel = require("./model/admin/setAndGetText.js");
+var createUserModel = require("./model/admin/createUser.js");
+var editAccountModel = require("./model/admin/editAccount.js");
 var testJsonModel = require("./model/testJson.js");
-var deleteUserCounterModel = require("./model/deleteUserCounter.js");
-var getUsersModel = require("./model/getUsers.js");
+var deleteUserCounterModel = require("./model/admin/deleteUserCounter.js");
+var getUsersModel = require("./model/admin/getUsers.js");
 var logoutModel = require("./model/logout.js");
-var loginAdminModel = require("./model/loginAdmin.js");
+var loginAdminModel = require("./model/admin/loginAdmin.js");
 //material
-var addNewMaterialModel = require("./model/addNewMaterial.js");
-var addStockModel = require("./model/addStock.js");
-var editMaterialModel = require("./model/editMaterial.js");
-var geMaterialDetailModel = require("./model/getMaterialDetail.js");
-var getMaterialsModel = require("./model/getMaterials.js");
+var addNewMaterialModel = require("./model/admin/addNewMaterial.js");
+var addStockModel = require("./model/storage-op/addStock.js");
+var editMaterialModel = require("./model/admin/editMaterial.js");
+var geMaterialDetailModel = require("./model/storage-op/getMaterialDetail.js");
+var getMaterialsModel = require("./model/storage-op/getMaterials.js");
 
 //product
-var getAllProductsModel = require("./model/getAllProducts.js");
-var getAvailableProductsModel = require("./model/getAvailableProducts.js");
-var addNewProductModel = require("./model/addNewProduct.js");
-var changeAvailabilityProductModel = require("./model/changeAvailabilityProduct.js");
+var getAllProductsModel = require("./model/admin/getAllProducts.js");
+var getAvailableProductsModel = require("./model/counter/getAvailableProducts.js");
+var addNewProductModel = require("./model/admin/addNewProduct.js");
+var changeAvailabilityProductModel = require("./model/admin/changeAvailabilityProduct.js");
 
-var createOrderModel = require("./model/createOrder.js");
-var addOrderItemModel = require("./model/addOrderItem.js");
+var createOrderModel = require("./model/counter/createOrder.js");
+var addOrderItemModel = require("./model/counter/addOrderItem.js");
+var getAllOrderItemModel = require("./model/cashier/getAllOrderItem.js");
 
 var app = express();
 var jwt = require("jsonwebtoken");
@@ -163,6 +164,7 @@ connect.prototype.configureExpress = function(connection) {
 
 			var createOrder = new createOrderModel(router,connection);
 			var addOrderItem = new addOrderItemModel(router,connection);
+			var getAllOrderItem = new getAllOrderItemModel(router,connection);
       self.startServer();
 };
 

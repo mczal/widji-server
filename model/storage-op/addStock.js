@@ -23,11 +23,12 @@ addStock.prototype.handleRoutes = function(router,connection){
           }else{
             if(rows.length>0){
               var oldQty = rows[0].quantity;
-              connection.query("update `material` set quantity="+(unitQuantity+oldQty)+" where id_material="+idMaterial,function(err,rows){
+              var updatedQty = (unitQuantity*1)+(oldQty*1);
+              connection.query("update `material` set quantity="+updatedQty+" where id_material="+idMaterial,function(err,rows){
                 if(err){
                   res.json({"message":"err.. error on updating material value"});
                 }else{
-                  res.json({"message":"success","quantity":(unitQuantity+oldQty)});
+                  res.json({"message":"success","quantity":updatedQty});
                 }
               });
             }else{
