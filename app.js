@@ -37,6 +37,9 @@ var addOrderItemModel = require("./model/counter/addOrderItem.js");
 var getAllOrderItemModel = require("./model/cashier/getAllOrderItem.js");
 var getAllOrdersModel = require("./model/cashier/getAllOrders.js");
 
+//cron
+var resetQueueNewDayModel = require("./model/cron/resetQueueNewDay.js");
+
 var app = express();
 var jwt = require("jsonwebtoken");
 app.set('superSecret', 'ilovenode8');
@@ -167,6 +170,9 @@ connect.prototype.configureExpress = function(connection) {
 			var addOrderItem = new addOrderItemModel(router,connection);
 			var getAllOrderItem = new getAllOrderItemModel(router,connection);
 			var getAllOrders = new getAllOrdersModel(router,connection);
+
+			//cron
+			var resetQueueNewDay = new resetQueueNewDayModel(router,connection);
       self.startServer();
 };
 
