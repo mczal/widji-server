@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2016 at 06:07 AM
+-- Generation Time: Apr 03, 2016 at 12:16 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -226,7 +226,11 @@ CREATE TABLE IF NOT EXISTS `order` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` tinyint(4) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `customer_id` int(11) NOT NULL
+  `customer_id` int(11) NOT NULL,
+  `tanggal_pengambilan` date DEFAULT NULL,
+  `jam_pengambilan` time DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `jumlah_bayar` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -255,17 +259,18 @@ CREATE TABLE IF NOT EXISTS `product` (
   `size` varchar(20) NOT NULL,
   `status` tinyint(4) NOT NULL,
   `weight` double NOT NULL,
-  `imgbase64` varchar(255) NOT NULL
+  `imgbase64` varchar(255) NOT NULL,
+  `price` double DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `category_id`, `media`, `size`, `status`, `weight`, `imgbase64`) VALUES
-(1, 1, 'HVS', 'A3', 0, 1.5, 'loremipsumdolorsitamet'),
-(2, 2, 'HVS', 'A5', 1, 1.231, 'ipsumdolorsitamet'),
-(3, 1, 'Letter', 'A1', 1, 1.33, 'ampunkk');
+INSERT INTO `product` (`id`, `category_id`, `media`, `size`, `status`, `weight`, `imgbase64`, `price`) VALUES
+(1, 1, 'HVS', 'A3', 0, 1.5, 'loremipsumdolorsitamet', 1000),
+(2, 2, 'HVS', 'A5', 1, 1.231, 'ipsumdolorsitamet', 2500),
+(3, 1, 'Letter', 'A1', 1, 1.33, 'ampunkk', 2100);
 
 -- --------------------------------------------------------
 
@@ -338,7 +343,7 @@ CREATE TABLE IF NOT EXISTS `session` (
 
 INSERT INTO `session` (`id_session`, `session_code`, `id_user`) VALUES
 (12, 'a', 1),
-(13, 'hU(TU933I4', 2);
+(13, 'b', 2);
 
 -- --------------------------------------------------------
 

@@ -27,7 +27,7 @@ var geMaterialDetailModel = require("./model/storage-op/getMaterialDetail.js");
 var getMaterialsModel = require("./model/storage-op/getMaterials.js");
 
 //product
-var getAllProductsModel = require("./model/admin/getAllProducts.js");
+var getAllProductsByCategoryModel = require("./model/admin/getAllProductsByCategory.js");
 var getAvailableProductsModel = require("./model/counter/getAvailableProducts.js");
 var addNewProductModel = require("./model/admin/addNewProduct.js");
 var changeAvailabilityProductModel = require("./model/admin/changeAvailabilityProduct.js");
@@ -36,6 +36,7 @@ var createOrderModel = require("./model/counter/createOrder.js");
 var addOrderItemModel = require("./model/counter/addOrderItem.js");
 var getAllOrderItemModel = require("./model/cashier/getAllOrderItem.js");
 var getAllOrdersModel = require("./model/cashier/getAllOrders.js");
+var setOrderInfoModel = require("./model/counter/setOrderInfo.js");
 
 //customer
 var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMember.js");
@@ -167,7 +168,7 @@ connect.prototype.configureExpress = function(connection) {
 			var geMaterialDetail = new geMaterialDetailModel(router,connection);
 			var getMaterials = new getMaterialsModel(router,connection);
 
-			var getAllProducts = new getAllProductsModel(router,connection);
+			var getAllProductsByCategory = new getAllProductsByCategoryModel(router,connection);
 			var getAvailableProducts = new getAvailableProductsModel(router,connection);
 			var addNewProduct = new addNewProductModel(router,connection);
 			var changeAvailabilityProduct = new changeAvailabilityProductModel(router,connection);
@@ -176,6 +177,7 @@ connect.prototype.configureExpress = function(connection) {
 			var addOrderItem = new addOrderItemModel(router,connection);
 			var getAllOrderItem = new getAllOrderItemModel(router,connection);
 			var getAllOrders = new getAllOrdersModel(router,connection);
+			var setOrderInfo = new setOrderInfoModel(router,connection);
 
 			var registerMember = new registerMemberModel(router,connection);
 			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);
