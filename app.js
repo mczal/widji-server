@@ -37,6 +37,12 @@ var addOrderItemModel = require("./model/counter/addOrderItem.js");
 var getAllOrderItemModel = require("./model/cashier/getAllOrderItem.js");
 var getAllOrdersModel = require("./model/cashier/getAllOrders.js");
 
+//customer
+var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMember.js");
+var getCustomersModel = require("./model/counter/getCustomers.js");
+var registerMemberModel = require("./model/cashier/registerMember.js");
+
+
 //cron
 var resetQueueNewDayModel = require("./model/cron/resetQueueNewDay.js");
 
@@ -170,6 +176,10 @@ connect.prototype.configureExpress = function(connection) {
 			var addOrderItem = new addOrderItemModel(router,connection);
 			var getAllOrderItem = new getAllOrderItemModel(router,connection);
 			var getAllOrders = new getAllOrdersModel(router,connection);
+
+			var registerMember = new registerMemberModel(router,connection);
+			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);
+			var getCustomers = new getCustomersModel(router,connection);
 
 			//cron
 			var resetQueueNewDay = new resetQueueNewDayModel(router,connection);

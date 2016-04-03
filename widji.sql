@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2016 at 01:14 AM
+-- Generation Time: Apr 03, 2016 at 06:07 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -86,6 +86,21 @@ CREATE TABLE IF NOT EXISTS `count_display` (
 
 INSERT INTO `count_display` (`id_count_display`, `value`) VALUES
 (1, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+CREATE TABLE IF NOT EXISTS `customer` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `membership_id` int(11) DEFAULT NULL,
+  `birthdate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -187,6 +202,20 @@ INSERT INTO `material` (`id_material`, `material_code`, `material_name`, `smalle
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `membership`
+--
+
+CREATE TABLE IF NOT EXISTS `membership` (
+  `id` int(11) NOT NULL,
+  `barcode_code` varchar(5) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `discount` double NOT NULL,
+  `desc` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `order`
 --
 
@@ -196,16 +225,9 @@ CREATE TABLE IF NOT EXISTS `order` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` tinyint(4) NOT NULL,
-  `name` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `order`
---
-
-INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`) VALUES
-(1, '1623023348541', '2016-03-30 16:34:08', '2016-03-30 16:34:08', 0, 'zahid'),
-(2, '163161127909', '2016-03-31 23:11:27', '2016-03-31 23:11:27', 0, 'Mohamad Fahrizal');
+  `name` varchar(50) NOT NULL,
+  `customer_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -218,15 +240,7 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   `product_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `order_item`
---
-
-INSERT INTO `order_item` (`id`, `product_id`, `order_id`, `quantity`) VALUES
-(1, 1, 1, 1),
-(2, 2, 1, 3);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -373,6 +387,12 @@ ALTER TABLE `count_display`
   ADD PRIMARY KEY (`id_count_display`);
 
 --
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `phone` (`phone`), ADD UNIQUE KEY `email` (`email`), ADD KEY `membership` (`membership_id`), ADD KEY `membership_id` (`membership_id`);
+
+--
 -- Indexes for table `display`
 --
 ALTER TABLE `display`
@@ -403,10 +423,16 @@ ALTER TABLE `material`
   ADD PRIMARY KEY (`id_material`), ADD UNIQUE KEY `kode_bahan` (`material_code`);
 
 --
+-- Indexes for table `membership`
+--
+ALTER TABLE `membership`
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `barcode_code` (`barcode_code`);
+
+--
 -- Indexes for table `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `no_bon` (`no_bon`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `no_bon` (`no_bon`), ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `order_item`
@@ -470,6 +496,11 @@ ALTER TABLE `counter`
 ALTER TABLE `count_display`
   MODIFY `id_count_display` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `display`
 --
 ALTER TABLE `display`
@@ -485,15 +516,20 @@ ALTER TABLE `last_display_queue`
 ALTER TABLE `material`
   MODIFY `id_material` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `membership`
+--
+ALTER TABLE `membership`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `product`
 --
@@ -535,6 +571,12 @@ ALTER TABLE `counter`
 ADD CONSTRAINT `counter_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
 
 --
+-- Constraints for table `customer`
+--
+ALTER TABLE `customer`
+ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`membership_id`) REFERENCES `membership` (`id`);
+
+--
 -- Constraints for table `last_entry_cat_queue`
 --
 ALTER TABLE `last_entry_cat_queue`
@@ -545,6 +587,12 @@ ADD CONSTRAINT `last_entry_cat_queue_ibfk_1` FOREIGN KEY (`id_cat`) REFERENCES `
 --
 ALTER TABLE `last_entry_counter_queue`
 ADD CONSTRAINT `last_entry_counter_queue_ibfk_1` FOREIGN KEY (`id_counter`) REFERENCES `counter` (`id_counter`);
+
+--
+-- Constraints for table `order`
+--
+ALTER TABLE `order`
+ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
 
 --
 -- Constraints for table `product`
