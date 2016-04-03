@@ -9,7 +9,7 @@ var self=this;
 
 getAllProductsByCategory.prototype.handleRoutes = function(router,connection){
   router.post('/getAllProductsByCategory',function(req,res){
-    var idCategory = req.body.category;
+    var idCategory = req.body.idCategory;
     if(idCategory == null || idCategory == undefined || idCategory == ''){
       res.json({"message":"err.. no params received"});
     }else{

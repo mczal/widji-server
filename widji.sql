@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2016 at 12:16 PM
+-- Generation Time: Apr 03, 2016 at 05:52 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -100,7 +100,14 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `email` varchar(100) DEFAULT NULL,
   `membership_id` int(11) DEFAULT NULL,
   `birthdate` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`id`, `name`, `phone`, `email`, `membership_id`, `birthdate`) VALUES
+(1, 'jojon', '0856', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -230,8 +237,15 @@ CREATE TABLE IF NOT EXISTS `order` (
   `tanggal_pengambilan` date DEFAULT NULL,
   `jam_pengambilan` time DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
-  `jumlah_bayar` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `jumlah_bayar` double NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`) VALUES
+(1, '16332138129', '2016-04-03 14:38:12', '2016-04-03 14:38:12', 0, 'jojon pemesan1', 1, NULL, NULL, NULL, 6000);
 
 -- --------------------------------------------------------
 
@@ -243,8 +257,17 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `quantity` int(11) NOT NULL,
+  `price` double NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_item`
+--
+
+INSERT INTO `order_item` (`id`, `product_id`, `order_id`, `quantity`, `price`) VALUES
+(1, 1, 1, 1, 1000),
+(2, 2, 1, 2, 5000);
 
 -- --------------------------------------------------------
 
@@ -260,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `status` tinyint(4) NOT NULL,
   `weight` double NOT NULL,
   `imgbase64` varchar(255) NOT NULL,
-  `price` double DEFAULT NULL
+  `price` double NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
@@ -504,7 +527,7 @@ ALTER TABLE `count_display`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `display`
 --
@@ -529,12 +552,12 @@ ALTER TABLE `membership`
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `product`
 --

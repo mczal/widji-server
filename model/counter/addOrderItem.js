@@ -42,13 +42,48 @@ addOrderItem.prototype.handleRoutes = function(router,connection){
                       if(rows.length>0){
                         if(rows.length==1){
                           if(rows[0].id_role == 2){
-                            connection.query("insert into `order_item`(product_id,order_id,quantity) values("+idProduct+","+idBon+","+quantity+")",function(err,rows){
-                              if(err){
-                                res.json({"message":"err.. error in inserting order item"});
-                              }else{
-                                res.json({"message":"success","error":"success"});
-                              }
-                            });
+                            //must check product price and sum it to `order`
+                              //1. get product price from idProduct
+                              connection.query("select price from `product` where id = "+idProduct,function(err,rows){
+                                if(err){
+                                  res.json({"message":"err.. error on selecting price","error":"error"});
+                                }else{
+                                  if(rows.length>0){
+                                    var productPrice = (rows[0].price)*quantity;
+                              //2. sum price to the jumlah_bayar field in order
+                                //2.1 get old price first
+                                    connection.query("select jumlah_bayar from `order` where no_bon='"+no_bon+"'",function(err,rows){
+                                      if(err){
+                                        res.json({"message":"err.. error on selecting old price"});
+                                      }else{
+                                        if(rows.length>0){
+                                          var oldPrice = rows[0].jumlah_bayar;
+                                //2.2 sum it with the new added
+                                          var updatedPrice = (1*productPrice)+(oldPrice*1);
+                                          connection.query("update `order` set jumlah_bayar="+updatedPrice+" where no_bon='"+no_bon+"'",function(err,rows){
+                                            if(err){
+                                              res.json({"messahe":"err.. error on updating"});
+                                            }else{
+                                              //here now 2..2
+                                              connection.query("insert into `order_item`(product_id,order_id,quantity,price) values("+idProduct+","+idBon+","+quantity+","+productPrice+")",function(err,rows){
+                                                if(err){
+                                                  res.json({"message":"err.. error in inserting order item"});
+                                                }else{
+                                                  res.json({"message":"success","error":"success"});
+                                                }
+                                              });
+                                            }
+                                          });
+                                        }else{
+                                          res.json({"message":"err.. no rows"});
+                                        }
+                                      }
+                                    });
+                                  }else{
+                                    res.json({"message":"err.. no rows on prod","error":"error"});
+                                  }
+                                }
+                              });
                           }else{
                             res.json({"message":"err.. don't have authorize to do this action"});
                           }

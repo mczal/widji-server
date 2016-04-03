@@ -43,6 +43,8 @@ var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMem
 var getCustomersModel = require("./model/counter/getCustomers.js");
 var registerMemberModel = require("./model/cashier/registerMember.js");
 
+var getAllMemberTypeModel = require("./model/cashier/getAllMemberType.js");
+
 
 //cron
 var resetQueueNewDayModel = require("./model/cron/resetQueueNewDay.js");
@@ -182,6 +184,8 @@ connect.prototype.configureExpress = function(connection) {
 			var registerMember = new registerMemberModel(router,connection);
 			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);
 			var getCustomers = new getCustomersModel(router,connection);
+
+			var getAllMemberType = new getAllMemberTypeModel(router,connection);
 
 			//cron
 			var resetQueueNewDay = new resetQueueNewDayModel(router,connection);
