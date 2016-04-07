@@ -14,7 +14,7 @@ getCustomers.prototype.handleRoutes = function(router,connection){
         res.json({"message":"err.. error on selecting"});
       }else{
         if(rows.length>0){
-          res.json({"message":"success","content":rows});
+          res.json(rows);
         }else{
           res.json({"message":"err.. no rows"});
         }
