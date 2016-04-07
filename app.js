@@ -16,7 +16,7 @@ var createUserModel = require("./model/admin/createUser.js");
 var editAccountModel = require("./model/admin/editAccount.js");
 var testJsonModel = require("./model/testJson.js");
 var deleteUserCounterModel = require("./model/admin/deleteUserCounter.js");
-var getUsersModel = require("./model/admin/getUsers.js");
+var getUsersModel = require("./model/getUsers.js");
 var logoutModel = require("./model/logout.js");
 var loginAdminModel = require("./model/admin/loginAdmin.js");
 //material

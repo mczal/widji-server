@@ -9,11 +9,11 @@ var self=this;
 
 getUsers.prototype.handleRoutes = function(router,connection,md5){
   router.post('/getUsers',function(req,res){
-    var session = req.body.session;
-    if(session==null || session==undefined || session==''){
+    var sessionCode = req.body.sessionCode;
+    if(sessionCode==null || sessionCode==undefined || sessionCode==''){
         res.json({"message":"err.. error no params session rec"});
     }else{
-      connection.query("select id_user from `session` where session_code='"+session+"'",function(err,rows){
+      connection.query("select id_user from `session` where session_code='"+sessionCode+"'",function(err,rows){
         if(err){
           res.json({"message":"err.. error on selecting session"});
         }else{
@@ -31,22 +31,18 @@ getUsers.prototype.handleRoutes = function(router,connection,md5){
                         res.json({"message":"err.. error on lookup role"});
                       }else{
                         if(rows.length>0){
-                          if(rows[0].role_name=='admin'){
-                            // TO DO
-                            connection.query("select user.username,role.role_name from `user` join `role` on user.id_role=role.id_role order by user.id_role",function(err,rows){
-                              if(err){
-                                res.json({"message":"err.. error on selecting username join with role"});
+                          // TO DO
+                          connection.query("select * from `user` join `role` on user.id_role=role.id_role order by user.id_role,user.id_user",function(err,rows){
+                            if(err){
+                              res.json({"message":"err.. error on selecting username join with role"});
+                            }else{
+                              if(rows.length>0){
+                                res.json(rows);
                               }else{
-                                if(rows.length>0){
-                                  res.json(rows);
-                                }else{
-                                  res.json({"message":"err.. no rows"});
-                                }
+                                res.json({"message":"err.. no rows"});
                               }
-                            });
-                          }else{
-                            res.json({"message":"err.. you didn't authorize to do this action"});
-                          }
+                            }
+                          });
                         }else{
                           res.json({"message":"err.. no rows on role"});
                         }
