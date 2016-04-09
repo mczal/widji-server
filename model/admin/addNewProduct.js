@@ -57,9 +57,18 @@ addNewProduct.prototype.handleRoutes = function(router,connection){
                       if(rows.length != 1){
                         res.json({"message":"rows user sess .length > 1 !","rows":rows,"error":"error"});
                       }else{
-                        if(imgbase64 == null || imgbase64 == undefined){
+                        var q1 ="-1";
+                        if(imgbase64 == null || imgbase64 == undefined || imgbase64 == ''){
                           imgbase64 = '';
-                        }else if(imgbase64 != ''){
+                          q1 = "insert into `product` (category_id,media,size,status,weight,price) values ("+idCategory+",'"+media+"','"+size+"',"+1+","+weight+","+price+")";
+                          connection.query(q1,function(err,rows){
+                            if(err){
+                              res.json({"message":"err.. error on inserting new product","query":q1});
+                            }else{
+                              res.json({"message":"success inserting new product","error":"success"});
+                            }
+                          });
+                        }else{
                           //gambarnya aadaa!!
                           //IMGBASE64 Affair
                           var path = "assets/img/products";
@@ -67,7 +76,6 @@ addNewProduct.prototype.handleRoutes = function(router,connection){
                           var split2 = split1[0].split("/");
                           var ext = split2[1];
                           var imgbase64Only = split1[1].split(",")[1];
-                          var query = "insert into `product` (category_id,media,size,status,weight,imgbase64,price) values ("+idCategory+",'"+media+"','"+size+"',"+1+","+weight+",'"+imgbase64+"',"+price+")";
                           mkpath.sync(path,function(err){
                             if(err){
                               console.log("message err.. error on sync");
@@ -84,26 +92,24 @@ addNewProduct.prototype.handleRoutes = function(router,connection){
                             }
                           });
                           var decodedImage = new Buffer(imgbase64Only, 'base64');
-                          var filename = 'product'+generateUniqueCode()+'.'+ext;
+                          var filename = "product_"+idCategory+"_"+media+"_"+size+"_"+weight+"_"+price+"."+ext;
                           fs.writeFile(path+"/"+filename, decodedImage, function(err) {
                             if(err){
                               console.log("message err.. error in fs.write err:"+err);
                               res.json({"message":"err.. error in fs.write","err":err});
                             }else{
                               console.log("message success upload img");
-                              var imgbase64_database = "localhost/Widji/widji-server/"+path+"/"+filename;
-                              query = "insert into `product` (category_id,media,size,status,weight,imgbase64,price) values ("+idCategory+",'"+media+"','"+size+"',"+1+","+weight+",'"+imgbase64_database+"',"+price+")";
+                              var imgbase64_database = "http://localhost/widji-server/"+path+"/"+filename;
+                              q1 = "insert into `product` (category_id,media,size,status,weight,price,imgbase64) values ("+idCategory+",'"+media+"','"+size+"',"+1+","+weight+","+price+",'"+imgbase64_database+"')";
+                              connection.query(q1,function(err,rows){
+                                if(err){
+                                  res.json({"message":"err.. error on inserting new product","query":q1});
+                                }else{
+                                  res.json({"message":"success inserting new product","error":"success"});
+                                }
+                              });
                             }
-                        });
-                        //hereherehere up on the attic
-                        //status auto 1 : available
-                        connection.query(query,function(err,rows){
-                          if(err){
-                            res.json({"message":"err.. error on inserting new product","query":query});
-                          }else{
-                            res.json({"message":"success inserting new product","error":"success"});
-                          }
-                        });
+                          });
                       }
                     }
                   }else{
