@@ -48,7 +48,7 @@ discountMember.prototype.handleRoutes = function(router,connection){
                                 if(err){
                                   res.json({"message":"err.. error on updating"});
                                 }else{
-                                  res.json({"message":"err.. success adding discount","priceAfterDiscount":afterDisc});
+                                  res.json({"message":"err.. success adding discount","priceAfterDiscount":afterDisc,"discount":discount});
                                 }
                               });
                             }else{
