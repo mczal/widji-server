@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2016 at 05:52 PM
+-- Generation Time: Apr 09, 2016 at 01:53 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -214,7 +214,7 @@ INSERT INTO `material` (`id_material`, `material_code`, `material_name`, `smalle
 
 CREATE TABLE IF NOT EXISTS `membership` (
   `id` int(11) NOT NULL,
-  `barcode_code` varchar(5) NOT NULL,
+  `membership_code` varchar(5) NOT NULL,
   `name` varchar(30) NOT NULL,
   `discount` double NOT NULL,
   `desc` varchar(200) NOT NULL
@@ -237,15 +237,16 @@ CREATE TABLE IF NOT EXISTS `order` (
   `tanggal_pengambilan` date DEFAULT NULL,
   `jam_pengambilan` time DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
-  `jumlah_bayar` double NOT NULL
+  `jumlah_bayar` double NOT NULL,
+  `discount` double DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`) VALUES
-(1, '16332138129', '2016-04-03 14:38:12', '2016-04-03 14:38:12', 0, 'jojon pemesan1', 1, NULL, NULL, NULL, 6000);
+INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`) VALUES
+(1, '16332138129', '2016-04-03 14:38:12', '2016-04-03 14:38:12', 0, 'jojon pemesan1', 1, NULL, NULL, NULL, 5000, 0);
 
 -- --------------------------------------------------------
 
@@ -266,7 +267,6 @@ CREATE TABLE IF NOT EXISTS `order_item` (
 --
 
 INSERT INTO `order_item` (`id`, `product_id`, `order_id`, `quantity`, `price`) VALUES
-(1, 1, 1, 1, 1000),
 (2, 2, 1, 2, 5000);
 
 -- --------------------------------------------------------
@@ -305,15 +305,33 @@ CREATE TABLE IF NOT EXISTS `product_category` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product_category`
 --
 
 INSERT INTO `product_category` (`id`, `name`, `description`) VALUES
-(1, 'Black and White', NULL),
-(2, 'Full Color', NULL);
+(1, 'Black & White', NULL),
+(2, 'Full Color', NULL),
+(3, 'Outdoor', NULL),
+(4, 'Jilid Binding', NULL),
+(5, 'Fotocopy', NULL),
+(6, 'Lainnya', NULL),
+(7, 'Item Tambahan', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_material`
+--
+
+CREATE TABLE IF NOT EXISTS `product_material` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `material_id` int(11) NOT NULL,
+  `material_quantity_used` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -454,7 +472,7 @@ ALTER TABLE `material`
 -- Indexes for table `membership`
 --
 ALTER TABLE `membership`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `barcode_code` (`barcode_code`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `barcode_code` (`membership_code`);
 
 --
 -- Indexes for table `order`
@@ -479,6 +497,12 @@ ALTER TABLE `product`
 --
 ALTER TABLE `product_category`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_material`
+--
+ALTER TABLE `product_material`
+  ADD PRIMARY KEY (`id`), ADD KEY `product_id` (`product_id`), ADD KEY `material_id` (`material_id`);
 
 --
 -- Indexes for table `queue_rtn`
@@ -567,7 +591,12 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product_category`
 --
 ALTER TABLE `product_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `product_material`
+--
+ALTER TABLE `product_material`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `queue_rtn`
 --
@@ -627,6 +656,13 @@ ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` 
 --
 ALTER TABLE `product`
 ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
+
+--
+-- Constraints for table `product_material`
+--
+ALTER TABLE `product_material`
+ADD CONSTRAINT `product_material_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+ADD CONSTRAINT `product_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`id_material`);
 
 --
 -- Constraints for table `queue_rtn`

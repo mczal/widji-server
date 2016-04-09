@@ -6,11 +6,11 @@ function registerMember(router,connection){
 }
 
 var self=this;
-
+//GANTI PARAMETER
 registerMember.prototype.handleRoutes = function(router,connection){
   router.post('/registerMember',function(req,res){
     var name = req.body.name;
-    var phone = req.body.phone;
+    var idCustomer = req.body.idCustomer;
     var email = req.body.email;
     var membership = req.body.membership;
     var birthdate = req.body.birthdate;
@@ -18,8 +18,8 @@ registerMember.prototype.handleRoutes = function(router,connection){
     if(name == null || name == undefined || name == ''){
       res.json({"message":"err.. no param name received"});
     }else{
-      if(phone == null || phone == undefined || phone == ''){
-        res.json({"message":"err.. no param phone received"});
+      if(idCustomer == null || idCustomer == undefined || idCustomer == ''){
+        res.json({"message":"err.. no param idCustomer received"});
       }else{
         if(email == null || email == undefined || email == ''){
           res.json({"message":"err.. no params emil rec"});
@@ -31,40 +31,55 @@ registerMember.prototype.handleRoutes = function(router,connection){
               res.json({"message":"err.. no param birthdate received"});
             }else{
               //---if there's sessionCode check it should be placed here
-
-              //---
-              //check user's availability
-              connection.query("select name,membership from `customer` where phone = '"+phone+"'",function(err,rows){
+              var query = "select role.id_role as id_role from `session` join `user` on session.id_user=user.id_user join role on role.id_role=user.id_role where session.session_code='"+sessionCode+"'";
+              connection.query(query,function(err,rows){
                 if(err){
-                  res.json({"message":"err.. error on query check customer availability"});
+                  res.json({"message":"err.. error on session","query":query});
                 }else{
-                  if(rows.length>0){
-                    //phone have already registered ->
-                    var nameTable = rows[0].name;
-                    var membershipTable = rows[0].membership;
-                    if(membershipTable == null || membershipTable == undefined || membershipTable == ''){
-                      //if customer do not have memership yet, but already registered
-                      var query1 = "update `costumer` set name='"+name+"',membership="+membership+",birthdate='"+birthdate+"' where phone='"+phone+"'";
-                      connection.query(query1,function(err,rows){
+                  if(rows.length == 1){
+                    if(rows[0].id_role == 2){
+                      //---
+                      //check user's availability
+                      connection.query("select name,membership from `customer` where id="+idCustomer,function(err,rows){
                         if(err){
-                          res.json({"message":"err.. error on updating customer q1","query":query1});
+                          res.json({"message":"err.. error on query check customer availability"});
                         }else{
-                          res.json({"message":"success updating customer"});
+                          if(rows.length>0){
+                            //phone have already registered ->
+                            var nameTable = rows[0].name;
+                            var membershipTable = rows[0].membership;
+                            if(membershipTable == null || membershipTable == undefined || membershipTable == ''){
+                              //if customer do not have memership yet, but already registered
+                              var query1 = "update `costumer` set email='"+email+"', name='"+name+"',membership="+membership+",birthdate='"+birthdate+"' where id="+idCustomer;
+                              connection.query(query1,function(err,rows){
+                                if(err){
+                                  res.json({"message":"err.. error on updating customer q1","query":query1});
+                                }else{
+                                  res.json({"message":"success updating customer"});
+                                }
+                              });
+                            }else{
+                              //customer already registered and already be a member
+                              res.json({"message":"err.. phone already a member"});
+                            }
+                          }else{
+                            res.json({"message":"err.. customer not registered"});
+                            // var query2 = "insert into `customer`(name,phone,membership,birthdate) values ('"+name+"','"+phone+"',"+membership+",'"+birthdate+"')";
+                            // connection.query(query2,function(err,rows){
+                            //   if(err){
+                            //     res.json({"message":"err.. error in inserting customer","query":query2});
+                            //   }else{
+                            //     res.json({"message":"success inserting customer"});
+                            //   }
+                            // });
+                          }
                         }
                       });
                     }else{
-                      //customer already registered and already be a member
-                      res.json({"message":"err.. phone already a member"});
+                      res.json({"message":"err.. you have no authorize to do this action"});
                     }
                   }else{
-                    var query2 = "insert into `customer`(name,phone,membership,birthdate) values ('"+name+"','"+phone+"',"+membership+",'"+birthdate+"')";
-                    connection.query(query2,function(err,rows){
-                      if(err){
-                        res.json({"message":"err.. error in inserting customer","query":query2});
-                      }else{
-                        res.json({"message":"success inserting customer"});
-                      }
-                    });
+                    res.json({"message":"err... rows length not equal to 1"});
                   }
                 }
               });

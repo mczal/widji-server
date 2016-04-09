@@ -32,6 +32,7 @@ var getAvailableProductsModel = require("./model/counter/getAvailableProducts.js
 var addNewProductModel = require("./model/admin/addNewProduct.js");
 var changeAvailabilityProductModel = require("./model/admin/changeAvailabilityProduct.js");
 var addProductMaterialModel = require("./model/admin/addProductMaterial.js");
+var getProductDetailModel = require("./model/admin/getProductDetail.js");
 
 var createOrderModel = require("./model/counter/createOrder.js");
 var addOrderItemModel = require("./model/counter/addOrderItem.js");
@@ -45,6 +46,7 @@ var deleteItemOrderModel = require("./model/counter/deleteItemOrder.js");
 var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMember.js");
 var getCustomersModel = require("./model/counter/getCustomers.js");
 var registerMemberModel = require("./model/cashier/registerMember.js");
+var discountMemberModel = require("./model/cashier/discountMember.js");
 
 var getAllMemberTypeModel = require("./model/cashier/getAllMemberType.js");
 
@@ -178,6 +180,7 @@ connect.prototype.configureExpress = function(connection) {
 			var addNewProduct = new addNewProductModel(router,connection);
 			var changeAvailabilityProduct = new changeAvailabilityProductModel(router,connection);
 			var addProductMaterial = new addProductMaterialModel(router,connection);
+			var getProductDetail = new getProductDetailModel(router,connection);
 
 			var createOrder = new createOrderModel(router,connection);
 			var addOrderItem = new addOrderItemModel(router,connection);
@@ -190,6 +193,7 @@ connect.prototype.configureExpress = function(connection) {
 			var registerMember = new registerMemberModel(router,connection);
 			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);
 			var getCustomers = new getCustomersModel(router,connection);
+			var discountMember = new discountMemberModel(router,connection);
 
 			var getAllMemberType = new getAllMemberTypeModel(router,connection);
 
