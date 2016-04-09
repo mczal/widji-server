@@ -35,7 +35,7 @@ getAllOrderItem.prototype.handleRoutes = function(router,connection){
                         var orderName = rows[0].name;
                         var jumlahBayar = rows[0].jumlah_bayar;
                         var customerId = rows[0].customer_id;
-                        var createdAt = rows[0].customer_id;
+                        var createdAt = rows[0].created_at;
                         var tanggalPengambilan = rows[0].tanggal_pengambilan;
                         var jamPengambilan = rows[0].jam_pengambilan;
                         var keterangan = rows[0].keterangan;
@@ -46,7 +46,19 @@ getAllOrderItem.prototype.handleRoutes = function(router,connection){
                           if(err){
                             res.json({"message":"err.. error on selecting","error":"error"});
                           }else{
-                            res.json({"message":"success selecting","error":"success","order_name":orderName,"customer_id":customerId,"no_bon":no_bon,"createdAt":createdAt,"tanggalPengambilan":tanggalPengambilan,"jamPengambilan":jamPengambilan,"keterangan":keterangan,"status":status,"jumlah_bayar":jumlahBayar,"count":rows.length,"content":rows});
+                            connection.query("select phone from `customer` where id="+customerId,function(err,rowsz){
+                              if(err){
+                                res.json({"message":"err.. error on selecting phone"});
+                              }else{
+                                if(rows.length>0){
+                                  var phone = rowsz[0].phone;
+                                  //herehere
+                                  res.json({"message":"success selecting","error":"success","order_name":orderName,"customer_id":customerId,"no_bon":no_bon,"phone":phone,"createdAt":createdAt,"tanggalPengambilan":tanggalPengambilan,"jamPengambilan":jamPengambilan,"keterangan":keterangan,"status":status,"jumlah_bayar":jumlahBayar,"count":rows.length,"content":rows});
+                                }else{
+                                  res.json({"message":"err.. no rows"});
+                                }
+                              }
+                            });
                           }
                         });
                       }else{
