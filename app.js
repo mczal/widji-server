@@ -50,6 +50,7 @@ var discountMemberModel = require("./model/cashier/discountMember.js");
 
 var getAllMemberTypeModel = require("./model/cashier/getAllMemberType.js");
 
+var payModel = require("./model/cashier/pay.js");
 
 //cron
 var resetQueueNewDayModel = require("./model/cron/resetQueueNewDay.js");
@@ -196,6 +197,8 @@ connect.prototype.configureExpress = function(connection) {
 			var discountMember = new discountMemberModel(router,connection);
 
 			var getAllMemberType = new getAllMemberTypeModel(router,connection);
+
+			var pay = new payModel(router,connection);
 
 			//cron
 			var resetQueueNewDay = new resetQueueNewDayModel(router,connection);
