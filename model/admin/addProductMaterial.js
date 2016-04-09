@@ -8,7 +8,7 @@ function addProductMaterial(router,connection){
 var self=this;
 
 addProductMaterial.prototype.handleRoutes = function(router,connection){
-  router.post('/addProductMaterial',function(err,rows){
+  router.post('/addProductMaterial',function(req,res){
     var idProduct = req.body.idProduct;
     var idMaterial = req.body.idMaterial;
     var materialQuantity = req.body.materialQuantity;

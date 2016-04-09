@@ -27,7 +27,7 @@ getAllOrderItem.prototype.handleRoutes = function(router,connection){
                 // role kasir adalah role counter juga... = 2
                 if(rows[0].id_role == 2){
                   //must lookup jumlahbayar in order and name in order
-                  connection.query("select name,jumlah_bayar,customer_id from `order` where no_bon='"+no_bon+"'",function(err,rows){
+                  connection.query("select name,jumlah_bayar,customer_id,created_at,tanggal_pengambilan,jam_pengambilan,keterangan from `order` where no_bon='"+no_bon+"'",function(err,rows){
                     if(err){
                       res.json({"message":"err.. error on selecting name and jumByr"});
                     }else{
