@@ -207,7 +207,7 @@ connect.prototype.configureExpress = function(connection) {
 			var setOrderInfo = new setOrderInfoModel(router,connection);
 			var getOrderCustomerInfo = new getOrderCustomerInfoModel(router,connection);
 			var deleteItemOrder = new deleteItemOrderModel(router,connection);
-			var deleteOrder = new deleteOrderModel(router,connection);
+			var deleteOrder = new deleteOrderModel(router,connection,md5);
 
 			var registerMember = new registerMemberModel(router,connection);
 			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);

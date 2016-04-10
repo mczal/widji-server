@@ -4,7 +4,7 @@ function discountMember(router,connection){
     var self=this;
     self.handleRoutes(router,connection);
 }
-//KALO UDH SEKALI DIDISKON>>>BERARTI GABOLEH LAGI LAGI DISKON YAA TODO:
+//KALO...UDH SEKALI DIDISKON>>>BERARTI GABOLEH LAGI LAGI DISKON YAA TODO:
 discountMember.prototype.handleRoutes = function(router,connection){
   router.post('/discountMember',function(req,res){
     var sessionCode = req.body.sessionCode;
@@ -26,38 +26,53 @@ discountMember.prototype.handleRoutes = function(router,connection){
             }else{
               if(rows.length == 1){
                 if(rows[0].id_role == 2){
-                  //ambil jumlah discount dulu di membership code
-                  var q2 = "select discount from `membership` where membership_code='"+membershipCode+"'";
-                  connection.query(q2,function(err,rows){
+                  var q012 = "select discount,no_bon from `order` where no_bon='"+no_bon+"'";
+                  connection.query(q012,function(err,rows){
                     if(err){
-                      res.json({"message":"err.. error selecting discount"});
+                      res.json({"message":"err.. on selecting disc st1"});
                     }else{
                       if(rows.length>0){
-                        var discount = rows[0].discount;
-                        //pending
-                        var q3 = "select jumlah_bayar from `order` where no_bon = '"+no_bon+"'";
-                        connection.query(q3,function(err,rows){
-                          if(err){
-                            res.json({"message":"err.. error on selecting jumlah Bayar"});
-                          }else{
-                            if(rows.length>0){
-                              var jumlahBayar = rows[0].jumlah_bayar;
-                              var afterDisc = jumlahBayar-(jumlahBayar*discount/100);
-                              var q4 = "update `order` set discount="+discount+",jumlah_bayar="+afterDisc+" where no_bon='"+no_bon+"'";
-                              connection.query(q4,function(err,rows){
-                                if(err){
-                                  res.json({"message":"err.. error on updating"});
-                                }else{
-                                  res.json({"message":"err.. success adding discount","priceAfterDiscount":afterDisc,"discount":discount});
-                                }
-                              });
+                        if(rows[0].discount == null || rows[0].discount == undefined || rows[0].discount == ''){
+                          //ambil jumlah discount dulu di membership code
+                          var q2 = "select discount from `membership` where membership_code='"+membershipCode+"'";
+                          connection.query(q2,function(err,rows){
+                            if(err){
+                              res.json({"message":"err.. error selecting discount"});
                             }else{
-                              res.json({"message":"Err.. no rows absbas","q3":q3});
+                              if(rows.length>0){
+                                var discount = rows[0].discount;
+                                //pending
+                                var q3 = "select jumlah_bayar from `order` where no_bon = '"+no_bon+"'";
+                                connection.query(q3,function(err,rows){
+                                  if(err){
+                                    res.json({"message":"err.. error on selecting jumlah Bayar"});
+                                  }else{
+                                    if(rows.length>0){
+                                      var jumlahBayar = rows[0].jumlah_bayar;
+                                      var afterDisc = jumlahBayar-(jumlahBayar*discount/100);
+                                      var q4 = "update `order` set discount="+discount+",jumlah_bayar="+afterDisc+" where no_bon='"+no_bon+"'";
+                                      connection.query(q4,function(err,rows){
+                                        if(err){
+                                          res.json({"message":"err.. error on updating"});
+                                        }else{
+                                          res.json({"message":"err.. success adding discount","priceAfterDiscount":afterDisc,"discount":discount});
+                                        }
+                                      });
+                                    }else{
+                                      res.json({"message":"Err.. no rows absbas","q3":q3});
+                                    }
+                                  }
+                                });
+                              }else{
+                                res.json({"message":"err.. no rows","q2":q2});
+                              }
                             }
-                          }
-                        });
+                          });
+                        }else{
+                          res.json({"message":"err.. have already discounted"});
+                        }
                       }else{
-                        res.json({"message":"err.. no rows","q2":q2});
+                        res.json({"message":"err.. no rows on order with given n_b"});
                       }
                     }
                   });
