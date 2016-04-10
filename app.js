@@ -51,6 +51,8 @@ var registerMemberModel = require("./model/cashier/registerMember.js");
 var discountMemberModel = require("./model/cashier/discountMember.js");
 
 var getAllMemberTypeModel = require("./model/cashier/getAllMemberType.js");
+var changeMembershipTypeModel = require("./model/cashier/changeMembershipType.js");
+var registerMemberOnlyModel = require("./model/cashier/registerMemberOnly.js");
 
 var payModel = require("./model/cashier/pay.js");
 
@@ -215,6 +217,8 @@ connect.prototype.configureExpress = function(connection) {
 			var discountMember = new discountMemberModel(router,connection);
 
 			var getAllMemberType = new getAllMemberTypeModel(router,connection);
+			var changeMembershipType = new changeMembershipTypeModel(router,connection);
+			var registerMemberOnly = new registerMemberOnlyModel(router,connection);
 
 			var pay = new payModel(router,connection);
 

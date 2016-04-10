@@ -40,7 +40,7 @@ registerMember.prototype.handleRoutes = function(router,connection){
                     if(rows[0].id_role == 2){
                       //---
                       //check user's availability
-                      connection.query("select name,membership from `customer` where id="+idCustomer,function(err,rows){
+                      connection.query("select name,membership_id from `customer` where id="+idCustomer,function(err,rows){
                         if(err){
                           res.json({"message":"err.. error on query check customer availability"});
                         }else{
@@ -55,7 +55,22 @@ registerMember.prototype.handleRoutes = function(router,connection){
                                 if(err){
                                   res.json({"message":"err.. error on updating customer q1","query":query1});
                                 }else{
-                                  res.json({"message":"success updating customer"});
+                                  //selecting membership information
+                                  var q01 = "select * from `membership` where id="+membership;
+                                  connection.query(q01,function(err,rows){
+                                    if(err){
+                                      res.json({"message":"err.. error on selecting membership"});
+                                    }else{
+                                      if(rows.length>0){
+                                        var membershipCode = rows[0].membership_code;
+                                        var membershipName = rows[0].name;
+                                        var membershipDiscount = rows[0].discount;
+                                        res.json({"message":"success updating customer","membershipCode":membershipCode,"membershipName":membershipName,"membershipDiscount":membershipDiscount,"name":name,"email":email,"birthdate":birthdate});
+                                      }else{
+                                        res.json({"message":"err.. error on selecting membership"});
+                                      }
+                                    }
+                                  });
                                 }
                               });
                             }else{
