@@ -42,6 +42,7 @@ var getAllOrdersModel = require("./model/cashier/getAllOrders.js");
 var setOrderInfoModel = require("./model/counter/setOrderInfo.js");
 var getOrderCustomerInfoModel = require("./model/counter/getOrderCustomerInfo.js");
 var deleteItemOrderModel = require("./model/counter/deleteItemOrder.js");
+var deleteOrderModel = require("./model/counter/deleteOrder.js");
 
 //customer
 var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMember.js");
@@ -206,6 +207,7 @@ connect.prototype.configureExpress = function(connection) {
 			var setOrderInfo = new setOrderInfoModel(router,connection);
 			var getOrderCustomerInfo = new getOrderCustomerInfoModel(router,connection);
 			var deleteItemOrder = new deleteItemOrderModel(router,connection);
+			var deleteOrder = new deleteOrderModel(router,connection);
 
 			var registerMember = new registerMemberModel(router,connection);
 			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);

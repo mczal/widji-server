@@ -14,7 +14,7 @@ getAllMemberType.prototype.handleRoutes = function(router,connection){
         res.json({"m3ssage":"err.. error on selecting"});
       }else{
         if(rows.length>0){
-          res.json({"message":"success","content":rows});
+          res.json({"message":"success selecting","content":rows});
         }else{
           res.json({"message":"Err.. no rows"});
         }

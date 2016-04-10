@@ -4,7 +4,7 @@ function discountMember(router,connection){
     var self=this;
     self.handleRoutes(router,connection);
 }
-
+//KALO UDH SEKALI DIDISKON>>>BERARTI GABOLEH LAGI LAGI DISKON YAA TODO:
 discountMember.prototype.handleRoutes = function(router,connection){
   router.post('/discountMember',function(req,res){
     var sessionCode = req.body.sessionCode;
