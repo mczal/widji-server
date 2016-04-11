@@ -50,7 +50,7 @@ registerMember.prototype.handleRoutes = function(router,connection){
                             var membershipTable = rows[0].membership;
                             if(membershipTable == null || membershipTable == undefined || membershipTable == ''){
                               //if customer do not have memership yet, but already registered
-                              var query1 = "update `costumer` set email='"+email+"', name='"+name+"',membership_id="+membership+",birthdate='"+birthdate+"' where id="+idCustomer;
+                              var query1 = "update `customer` set email='"+email+"', name='"+name+"',membership_id="+membership+",birthdate='"+birthdate+"' where id="+idCustomer;
                               connection.query(query1,function(err,rows){
                                 if(err){
                                   res.json({"message":"err.. error on updating customer q1","query":query1});
