@@ -49,6 +49,7 @@ var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMem
 var getCustomersModel = require("./model/counter/getCustomers.js");
 var registerMemberModel = require("./model/cashier/registerMember.js");
 var discountMemberModel = require("./model/cashier/discountMember.js");
+var deleteCustomerModel = require("./model/admin/deleteCustomer.js");
 
 var getAllMemberTypeModel = require("./model/cashier/getAllMemberType.js");
 var changeMembershipTypeModel = require("./model/cashier/changeMembershipType.js");
@@ -215,6 +216,7 @@ connect.prototype.configureExpress = function(connection) {
 			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);
 			var getCustomers = new getCustomersModel(router,connection);
 			var discountMember = new discountMemberModel(router,connection);
+			var deleteCustomer = new deleteCustomerModel(router,connection);
 
 			var getAllMemberType = new getAllMemberTypeModel(router,connection);
 			var changeMembershipType = new changeMembershipTypeModel(router,connection);
