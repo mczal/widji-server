@@ -44,6 +44,8 @@ var getOrderCustomerInfoModel = require("./model/counter/getOrderCustomerInfo.js
 var deleteItemOrderModel = require("./model/counter/deleteItemOrder.js");
 var deleteOrderModel = require("./model/counter/deleteOrder.js");
 
+var associateOrderItemAndStocksModel = require("./model/cashier/associateOrderItemAndStocks.js");
+
 //customer
 var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMember.js");
 var getCustomersModel = require("./model/counter/getCustomers.js");
@@ -86,7 +88,7 @@ connect.prototype.connectMysql = function() {
 		host     : '127.0.0.1',
 		user     : 'root',
 		password : '',
-		database : 'widji',
+		database : 'widjimeke',
         datestring : true,
         debug    :  false//console
     });
@@ -211,6 +213,8 @@ connect.prototype.configureExpress = function(connection) {
 			var getOrderCustomerInfo = new getOrderCustomerInfoModel(router,connection);
 			var deleteItemOrder = new deleteItemOrderModel(router,connection);
 			var deleteOrder = new deleteOrderModel(router,connection,md5);
+
+			var associateOrderItemAndStocks = new associateOrderItemAndStocksModel(router,connection);
 
 			var registerMember = new registerMemberModel(router,connection);
 			var createCustomerNonMember = new createCustomerNonMemberModel(router,connection);
