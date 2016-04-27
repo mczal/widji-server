@@ -56,11 +56,14 @@ var deleteCustomerModel = require("./model/admin/deleteCustomer.js");
 var getAllMemberTypeModel = require("./model/cashier/getAllMemberType.js");
 var changeMembershipTypeModel = require("./model/cashier/changeMembershipType.js");
 var registerMemberOnlyModel = require("./model/cashier/registerMemberOnly.js");
+var getOrderItemModel = require("./model/monitor/getOrderItem.js");
 
 var payModel = require("./model/cashier/pay.js");
 
 //monitor
 var deadlineMonitorModel = require("./model/monitor/deadlineMonitor.js");
+var changeStatusToOnProgressModel = require("./model/monitor/changeStatusToOnProgress.js");
+var changeStatusToDoneModel = require("./model/monitor/changeStatusToDone.js");
 
 //cron
 var resetQueueNewDayModel = require("./model/cron/resetQueueNewDay.js");
@@ -230,6 +233,9 @@ connect.prototype.configureExpress = function(connection) {
 			var registerMemberOnly = new registerMemberOnlyModel(router,connection);
 
 			var deadlineMonitor = new deadlineMonitorModel(router,connection);
+			var changeStatusToOnProgress = new changeStatusToOnProgressModel(router,connection);
+			var getOrderItem = new getOrderItemModel(router,connection);
+			var changeStatusToDone = new changeStatusToDoneModel(router,connection);
 
 			var pay = new payModel(router,connection);
 
