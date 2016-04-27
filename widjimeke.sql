@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2016 at 07:06 PM
+-- Generation Time: Apr 27, 2016 at 05:20 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -24,7 +24,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `associate_orderItem_stock`(IN `idProduct` INT, IN `quantityz` INT, IN `idOrderItem` INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `associate_orderItem_stock`(IN `idProduct` INT, IN `quantityz` INT, IN `idOrderItem` INT, IN `noBon` VARCHAR(30))
     NO SQL
 BEGIN
 
@@ -58,13 +58,15 @@ label1: LOOP
 	
 
 	IF tempQuantity < (materialQuantityUsed*quantityz) THEN
-			INSERT INTO `stock_monitoring` (order_item_id,id_material,material_name,status)
-			VALUES (idOrderItem,idMaterial,tempMaterialName,-1);
+			INSERT INTO `stock_monitoring` (no_bon,order_item_id,id_material,material_name,status)
+			VALUES (noBon,idOrderItem,idMaterial,tempMaterialName,-1);
+
+			UPDATE `material` SET quantity = tempQuantity-(materialQuantityUsed*quantityz) where id_material = idMaterial;
 		ELSE
-			UPDATE `material` SET quantity = tempQuantity-materialQuantityUsed where id_material = idMaterial;
+			UPDATE `material` SET quantity = tempQuantity-(materialQuantityUsed*quantityz) where id_material = idMaterial;
 				
-			INSERT INTO `stock_monitoring` (order_item_id,id_material,material_name,status)
-			VALUES (idOrderItem,idMaterial,tempMaterialName,1);
+			INSERT INTO `stock_monitoring` (no_bon,order_item_id,id_material,material_name,status)
+			VALUES (noBon,idOrderItem,idMaterial,tempMaterialName,1);
 		END IF;
 
 
@@ -320,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `material` (
 --
 
 INSERT INTO `material` (`id_material`, `material_code`, `material_name`, `smallest_unit`, `stock_per_unit`, `unit_name`, `quantity`) VALUES
-(1, 'abc12test', 'testing katun', 'meter', 200, 'roll', 4);
+(1, 'abc12test', 'testing katun', 'meter', 200, 'roll', -289);
 
 -- --------------------------------------------------------
 
@@ -361,31 +363,32 @@ CREATE TABLE IF NOT EXISTS `order` (
   `jam_pengambilan` time DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `jumlah_bayar` double NOT NULL,
-  `discount` double DEFAULT NULL
+  `discount` double DEFAULT NULL,
+  `status_pengerjaan` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`) VALUES
-(2, '1639234124133', '2016-04-09 16:41:24', '2016-04-09 16:41:24', 1, 'Fahrizal', 2, '2016-04-10', '13:20:00', 'Cek cek information is here', 0, 15),
-(3, '163103944149', '2016-04-09 20:09:44', '2016-04-09 20:09:44', 1, 'Fahrizal', 2, '2016-04-12', '13:32:00', 'asdfasdfasdf', 0, 15),
-(5, '163107577445', '2016-04-10 00:57:07', '2016-04-10 00:57:07', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15),
-(6, '163108418403', '2016-04-10 01:04:18', '2016-04-10 01:04:18', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15),
-(7, '163108935242', '2016-04-10 01:09:35', '2016-04-10 01:09:35', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15),
-(8, '1631081735267', '2016-04-10 01:17:35', '2016-04-10 01:17:35', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15),
-(9, '1631084439704', '2016-04-10 01:44:39', '2016-04-10 01:44:39', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15),
-(10, '1631084615482', '2016-04-10 01:46:15', '2016-04-10 01:46:15', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15),
-(11, '16310193712669', '2016-04-10 12:37:12', '2016-04-10 12:37:12', 1, 'Fahrizal', 2, '2016-04-13', '09:00:00', 'blahblahblahblah', 0, 15),
-(12, '1631019394533', '2016-04-10 12:39:04', '2016-04-10 12:39:04', 1, 'jonjon', 3, '2016-04-16', '13:30:00', 'jkl;admfiladca', 0, 15),
-(13, '1631114220784', '2016-04-11 07:02:20', '2016-04-11 07:02:20', 1, 'Fahrizal', 2, '2016-04-23', '13:00:00', 'blah blah blah blah', 0, 15),
-(14, '16311151411901', '2016-04-11 08:14:11', '2016-04-11 08:14:11', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15),
-(15, '1631115144650', '2016-04-11 08:14:46', '2016-04-11 08:14:46', 0, 'Fahrizal', 2, NULL, NULL, NULL, 3150, NULL),
-(17, '16311151616924', '2016-04-11 08:16:16', '2016-04-11 08:16:16', 0, 'Fahrizal', 2, '2016-04-23', '21:00:00', 'asd asdfasdfa', 22950, NULL),
-(18, '16311151938395', '2016-04-11 08:19:38', '2016-04-11 08:19:38', 0, 'jonjon', 3, '2016-04-23', '13:23:00', 's asdf asdf asdf', 2400, NULL),
-(19, '16311152139221', '2016-04-11 08:21:39', '2016-04-11 08:21:39', 1, 'Fahrizal', 2, NULL, NULL, NULL, 0, 15),
-(20, '16311152320777', '2016-04-11 08:23:20', '2016-04-11 08:23:20', 1, 'Fahrizal', 2, '2016-04-16', '11:15:00', 'a sdfj kalsd fad', 0, 15);
+INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`, `status_pengerjaan`) VALUES
+(1, '1639234124133', '2016-04-09 16:41:24', '2016-04-09 16:41:24', 1, 'Fahrizal', 2, '2016-04-10', '13:20:00', 'Cek cek information is here', 0, 15, 0),
+(3, '163103944149', '2016-04-09 20:09:44', '2016-04-09 20:09:44', 1, 'Fahrizal', 2, '2016-04-12', '13:32:00', 'asdfasdfasdf', 0, 15, 0),
+(5, '163107577445', '2016-04-10 00:57:07', '2016-04-10 00:57:07', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0),
+(6, '163108418403', '2016-04-10 01:04:18', '2016-04-10 01:04:18', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0),
+(7, '163108935242', '2016-04-10 01:09:35', '2016-04-10 01:09:35', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0),
+(8, '1631081735267', '2016-04-10 01:17:35', '2016-04-10 01:17:35', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0),
+(9, '1631084439704', '2016-04-10 01:44:39', '2016-04-10 01:44:39', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0),
+(10, '1631084615482', '2016-04-10 01:46:15', '2016-04-10 01:46:15', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0),
+(11, '16310193712669', '2016-04-10 12:37:12', '2016-04-10 12:37:12', 1, 'Fahrizal', 2, '2016-04-13', '09:00:00', 'blahblahblahblah', 0, 15, 0),
+(12, '1631019394533', '2016-04-10 12:39:04', '2016-04-10 12:39:04', 1, 'jonjon', 3, '2016-04-16', '13:30:00', 'jkl;admfiladca', 0, 15, 0),
+(13, '1631114220784', '2016-04-11 07:02:20', '2016-04-11 07:02:20', 1, 'Fahrizal', 2, '2016-04-23', '13:00:00', 'blah blah blah blah', 0, 15, 0),
+(14, '16311151411901', '2016-04-11 08:14:11', '2016-04-11 08:14:11', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0),
+(15, '1631115144650', '2016-04-11 08:14:46', '2016-04-11 08:14:46', 0, 'Fahrizal', 2, NULL, NULL, NULL, 3150, NULL, 0),
+(17, '16311151616924', '2016-04-11 08:16:16', '2016-04-11 08:16:16', 0, 'Fahrizal', 2, '2016-04-23', '21:00:00', 'asd asdfasdfa', 22950, NULL, 0),
+(18, '16311151938395', '2016-04-11 08:19:38', '2016-04-11 08:19:38', 0, 'jonjon', 3, '2016-04-23', '13:23:00', 's asdf asdf asdf', 2400, NULL, 0),
+(19, '16311152139221', '2016-04-11 08:21:39', '2016-04-11 08:21:39', 1, 'Fahrizal', 2, NULL, NULL, NULL, 0, 15, 0),
+(20, '16311152320777', '2016-04-11 08:23:20', '2016-04-11 08:23:20', 1, 'Fahrizal', 2, '2016-04-16', '11:15:00', 'a sdfj kalsd fad', 0, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -581,20 +584,26 @@ INSERT INTO `session` (`id_session`, `session_code`, `id_user`) VALUES
 
 CREATE TABLE IF NOT EXISTS `stock_monitoring` (
   `id` int(11) NOT NULL,
+  `no_bon` varchar(30) NOT NULL,
   `order_item_id` int(11) NOT NULL,
   `id_material` int(11) NOT NULL,
   `material_name` varchar(30) NOT NULL,
   `status` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `stock_monitoring`
 --
 
-INSERT INTO `stock_monitoring` (`id`, `order_item_id`, `id_material`, `material_name`, `status`) VALUES
-(1, 2, 1, 'testing katun', 1),
-(2, 1, 1, 'testing katun', 1),
-(3, 1, 1, 'testing katun', 1);
+INSERT INTO `stock_monitoring` (`id`, `no_bon`, `order_item_id`, `id_material`, `material_name`, `status`) VALUES
+(1, '', 2, 1, 'testing katun', 1),
+(2, '', 1, 1, 'testing katun', 1),
+(3, '', 1, 1, 'testing katun', 1),
+(4, '1639234124133', 1, 1, 'testing katun', 1),
+(5, '1639234124133', 1, 1, 'testing katun', 1),
+(6, '1639234124133', 1, 1, 'testing katun', -1),
+(7, '1639234124133', 1, 1, 'testing katun', -1),
+(8, '1639234124133', 1, 1, 'testing katun', -1);
 
 -- --------------------------------------------------------
 
@@ -832,7 +841,7 @@ ALTER TABLE `session`
 -- AUTO_INCREMENT for table `stock_monitoring`
 --
 ALTER TABLE `stock_monitoring`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `user`
 --
