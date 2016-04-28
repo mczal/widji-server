@@ -44,7 +44,7 @@ var getOrderCustomerInfoModel = require("./model/counter/getOrderCustomerInfo.js
 var deleteItemOrderModel = require("./model/counter/deleteItemOrder.js");
 var deleteOrderModel = require("./model/counter/deleteOrder.js");
 
-var associateOrderItemAndStocksModel = require("./model/cashier/associateOrderItemAndStocks.js");
+var associateOrderItemAndStocksModel = require("./model/monitor/associateOrderItemAndStocks.js");
 
 //customer
 var createCustomerNonMemberModel = require("./model/counter/createCustomerNonMember.js");
