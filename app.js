@@ -87,7 +87,7 @@ connect.prototype.connectMysql = function() {
 	// body...
 	var self = this;
     var pool      =    mysql.createPool({ //bisa pake create pool , bisa juga pake mySQL biasa, tapi lebih aman POOL..>>searching
-        connectionLimit : 100,
+        connectionLimit : 1000,
         multipleStatements: true,
 
 		//kalo mau coba local host
@@ -95,7 +95,7 @@ connect.prototype.connectMysql = function() {
 		user     : 'root',
 		password : '',
 		database : 'widji',
-        datestring : true,
+        dateStrings : 'date',
         debug    :  false//console
     });
     pool.getConnection(function(err,connection){

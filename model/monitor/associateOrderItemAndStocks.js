@@ -26,12 +26,17 @@ associateOrderItemAndStocks.prototype.handleRoutes = function(router,connection)
                 var idProduct = rows[0].product_id;
                 var quantity = rows[0].quantity;
                 var outProc = 0;
-                var q2 = "CALL associate_orderItem_stock("+no_bon+","+idProduct+","+quantity+","+idOrderItem+")";
+                var q2 = "CALL associate_orderItem_stock("+idProduct+","+quantity+","+idOrderItem+","+no_bon+")";
                 connection.query(q2,function(err,rows){
                   if(err){
                     res.json({"message":"err.. error on calling procedure","q2":q2});
                   }else{
-                    res.json({"message":"Success","content":rows});
+                    //SEKALIAN NGEMBALIIN STATUS -1 ??? KALO KURANG ??
+                    // if(rows.length>0){
+                      res.json({"message":"Success","param":{"no_bon":no_bon,"idProduct":idProduct,"quantity":quantity,"idOrderItem":idOrderItem},"content":rows});
+                    //}else{
+                    //   res.json({"message":"err.. no rows"});
+                    // }
                   }
                 });
               }else {
