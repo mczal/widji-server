@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2016 at 07:05 PM
+-- Generation Time: May 01, 2016 at 07:38 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `material` (
 --
 
 INSERT INTO `material` (`id_material`, `material_code`, `material_name`, `smallest_unit`, `stock_per_unit`, `unit_name`, `quantity`) VALUES
-(1, 'abc12test', 'testing katun', 'meter', 200, 'roll', -289);
+(1, 'abc12test', 'testing katun', 'meter', 200, 'roll', 13);
 
 -- --------------------------------------------------------
 
@@ -374,8 +374,8 @@ CREATE TABLE IF NOT EXISTS `order` (
 --
 
 INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`, `status_pengerjaan`, `worker`, `laci`) VALUES
-(1, '1639234124133', '2016-04-09 16:41:24', '2016-04-09 16:41:24', 2, 'Fahrizal', 2, '2016-04-29', '13:20:00', 'Cek cek information is here', 0, 15, 0, NULL, NULL),
-(3, '163103944149', '2016-04-09 20:09:44', '2016-04-09 20:09:44', 2, 'Fahrizal', 2, '2016-04-12', '13:32:00', 'asdfasdfasdf', 0, 15, 0, NULL, NULL),
+(1, '1639234124133', '2016-04-09 16:41:24', '2016-04-09 16:41:24', 2, 'Fahrizal', 2, '2016-05-03', '13:20:00', 'Cek cek information is here', 0, 15, 0, NULL, NULL),
+(3, '163103944149', '2016-04-09 20:09:44', '2016-04-09 20:09:44', 2, 'Fahrizal', 2, '2016-05-02', '13:32:00', 'asdfasdfasdf', 0, 15, 0, NULL, NULL),
 (5, '163107577445', '2016-04-10 00:57:07', '2016-04-10 00:57:07', 1, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 2, 'MARGANJANG KOMAR', 'laci ke 5 dari ujung kri sebelah wetan tenggara ba'),
 (6, '163108418403', '2016-04-10 01:04:18', '2016-04-10 01:04:18', 2, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0, NULL, NULL),
 (7, '163108935242', '2016-04-10 01:09:35', '2016-04-10 01:09:35', 2, 'jonjon', 3, NULL, NULL, NULL, 0, 15, 0, NULL, NULL),
@@ -417,10 +417,10 @@ INSERT INTO `order_item` (`id`, `product_id`, `order_id`, `quantity`, `price`) V
 (5, 3, 3, 1, 2100),
 (6, 4, 3, 3, 6000),
 (7, 8, 3, 1, 500),
-(8, 3, 5, 2, 4200),
-(9, 4, 5, 4, 8000),
-(10, 7, 5, 1, 5000),
-(11, 8, 5, 2, 1000),
+(8, 13, 5, 2, 4200),
+(9, 14, 5, 4, 8000),
+(10, 15, 5, 1, 5000),
+(11, 12, 5, 2, 1000),
 (12, 3, 6, 3, 6300),
 (13, 4, 6, 14, 28000),
 (15, 4, 7, 3, 6000),
