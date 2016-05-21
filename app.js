@@ -59,6 +59,7 @@ var registerMemberOnlyModel = require("./model/cashier/registerMemberOnly.js");
 var getOrderItemModel = require("./model/monitor/getOrderItem.js");
 
 var payModel = require("./model/cashier/pay.js");
+var loginCashierModel = require("./model/cashier/loginCashier.js");
 
 //monitor
 var deadlineMonitorModel = require("./model/monitor/deadlineMonitor.js");
@@ -238,6 +239,7 @@ connect.prototype.configureExpress = function(connection) {
 			var changeStatusToDone = new changeStatusToDoneModel(router,connection);
 
 			var pay = new payModel(router,connection);
+			var loginCashier = new loginCashierModel(router,connection,md5);
 
 			//cron
 			var resetQueueNewDay = new resetQueueNewDayModel(router,connection);

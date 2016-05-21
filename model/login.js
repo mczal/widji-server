@@ -61,7 +61,7 @@ login.prototype.handleRoutes=function(router,connection,md5){
                                         var query = "update `counter` set ip_addrs='"+myIp+"',statusz=1,id_user="+idUser+" where id_counter="+idCtr;
                                         connection.query(query,function(err,rows){
                                           if(err){
-                                            res.json({"message":"err.. error in updating counter","query":query});
+                                            res.json({"message":"err.. error in updating counter "+query,"query":query});
                                           }else{
                                             //success #1 herehere
                                             connection.query("select id_session from `session` where id_user="+idUser,function(err,rows){
