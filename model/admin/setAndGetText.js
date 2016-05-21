@@ -12,7 +12,22 @@ setAndGetText.prototype.handleRoutes = function(router,connection,md5){
     var text = req.body.text;
     var session = req.body.session;
     if(session==null || session==undefined || session==""){
-      res.json({"message":"err.. session not rec"});
+      // res.json({"message":"err.. session not rec"});
+      connection.query("select value from `display` where id_display=1",function(err,rows){
+        if(err){
+          res.json({"message":"err.. error on value"});
+        }else{
+          if(rows[0].length > 0){
+            if(rows[0].value == null || rows[0].value == undefined){
+              res.json({"message":"not success","text":" ","error":"not set (null or undefined)"});
+            }else{
+              res.json({"message":"success","text":rows[0].value});
+            }
+          }else{
+            res.json({"message":"not success","error":"no rows","text":" "})
+          }
+        }
+      });
     }else{
       connection.query("select id_user from `session` where session_code='"+session+"'",function(err,rows){
         if(err){
