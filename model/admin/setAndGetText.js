@@ -17,7 +17,7 @@ setAndGetText.prototype.handleRoutes = function(router,connection,md5){
         if(err){
           res.json({"message":"err.. error on value"});
         }else{
-          if(rows[0].length > 0){
+          if(rows.length > 0){
             if(rows[0].value == null || rows[0].value == undefined){
               res.json({"message":"not success","text":" ","error":"not set (null or undefined)"});
             }else{
