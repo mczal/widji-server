@@ -20,6 +20,7 @@ resetQueueNewDay.prototype.handleRoutes = function(router,connection){
     var q2 = "update `last_entry_cat_queue` set value = 0";
     var q3 = "update `last_entry_counter_queue` set value = 0";
     var q4 = "TRUNCATE `queue_rtn`";
+    var q5 = "update `count_display` set value=0 where id_count_display=1";
     connection.query(q1,function(err,rows){
       if(err){
         res.json({"message":"err.. error on q1","q1":q1});
@@ -36,7 +37,13 @@ resetQueueNewDay.prototype.handleRoutes = function(router,connection){
                   if(err){
                     res.json({"message":"err.. error on q4","q4":q4});
                   }else{
-                    res.json({"message":"success resetting the queue","goodbye":"see you tomorrow"});
+                    connection.query(q5,function(err,rows){
+                      if(err){
+                        res.json({"message":"err.. error on q5","q5":q5});
+                      }else{
+                        res.json({"message":"success resetting the queue","goodbye":"see you tomorrow"});
+                      }
+                    });
                   }
                 });
               }
