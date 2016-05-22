@@ -14,6 +14,7 @@ resetQueueNewDay.prototype.handleRoutes = function(router,connection){
     * 2. set value = 0 `last_entry_cat_queue`
     * 3. set value = 0 `last_entry_counter_queue`
     * 4. Truncate `queue_rtn`  (q:TRUNCATE `queue_rtn`)
+    * 5. Reset 'count_display' value
     */
     //
     var q1 = "TRUNCATE `last_display_queue`";
