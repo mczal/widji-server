@@ -17,13 +17,14 @@ addStock.prototype.handleRoutes = function(router,connection){
       if(unitQuantity==null || unitQuantity==undefined || unitQuantity==""){
         res.json({"message":"err.. no params unitQuantity received"});
       }else{
-        connection.query("select quantity from `material` where id_material="+idMaterial,function(err,rows){
+        connection.query("select quantity,stock_per_unit from `material` where id_material="+idMaterial,function(err,rows){
           if(err){
             res.json({"message":"Errr.. error on selecting material"});
           }else{
             if(rows.length>0){
               var oldQty = rows[0].quantity;
-              var updatedQty = (unitQuantity*1)+(oldQty*1);
+              var stockPerUnit = rows[0].stock_per_unit*1.0;
+              var updatedQty = (unitQuantity*(stockPerUnit*1.0))+(oldQty*1);
               connection.query("update `material` set quantity="+updatedQty+" where id_material="+idMaterial,function(err,rows){
                 if(err){
                   res.json({"message":"err.. error on updating material value"});
