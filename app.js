@@ -22,6 +22,7 @@ var loginAdminModel = require("./model/admin/loginAdmin.js");
 var editDiscountMembershipModel = require("./model/admin/editDiscountMembership.js");
 var resetCounterModel = require("./model/admin/resetCounter.js")
 var editCustomerModel = require("./model/admin/editCustomer.js");
+var earningsReportDayModel = require("./model/admin/earningsReportDay.js");
 //material
 var addNewMaterialModel = require("./model/admin/addNewMaterial.js");
 var addStockModel = require("./model/storage-op/addStock.js");
@@ -204,6 +205,7 @@ connect.prototype.configureExpress = function(connection) {
 			var editDiscountMembership = new editDiscountMembershipModel(router,connection);
 			var resetCounter = new resetCounterModel(router,connection);
 			var editCustomer = new editCustomerModel(router,connection);
+			var earningsReportDay = new earningsReportDayModel(router,connection);
 			//material
 			var addNewMaterial = new addNewMaterialModel(router,connection);
 			var addStock = new addStockModel(router,connection);

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2016 at 07:13 AM
+-- Generation Time: May 29, 2016 at 10:06 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -353,16 +353,17 @@ CREATE TABLE IF NOT EXISTS `order` (
   `discount` double DEFAULT NULL,
   `status_pengerjaan` int(11) NOT NULL,
   `worker` varchar(50) DEFAULT NULL,
-  `laci` varchar(50) DEFAULT NULL
+  `laci` varchar(50) DEFAULT NULL,
+  `harga_bayar_fix` double NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`, `status_pengerjaan`, `worker`, `laci`) VALUES
-(1, '16422223410466', '2016-05-22 15:34:10', '2016-05-22 15:34:10', 0, 'izal', 1, NULL, NULL, NULL, 0, NULL, 0, NULL, NULL),
-(2, '164222322790', '2016-05-22 16:22:07', '2016-05-22 16:22:07', 0, 'izal1', 2, NULL, NULL, NULL, 0, NULL, 0, NULL, NULL);
+INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`, `status_pengerjaan`, `worker`, `laci`, `harga_bayar_fix`) VALUES
+(1, '16422223410466', '2016-05-22 15:34:10', '2016-05-22 15:34:10', 0, 'izal', 1, NULL, NULL, NULL, 0, NULL, 0, NULL, NULL, 100),
+(2, '164222322790', '2016-05-22 16:22:07', '2016-05-22 16:22:07', 0, 'izal1', 2, NULL, NULL, NULL, 4000, NULL, 0, NULL, NULL, 10000);
 
 -- --------------------------------------------------------
 

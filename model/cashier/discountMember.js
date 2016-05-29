@@ -50,7 +50,7 @@ discountMember.prototype.handleRoutes = function(router,connection){
                                     if(rows.length>0){
                                       var jumlahBayar = rows[0].jumlah_bayar;
                                       var afterDisc = jumlahBayar-(jumlahBayar*discount/100);
-                                      var q4 = "update `order` set discount="+discount+",jumlah_bayar="+afterDisc+" where no_bon='"+no_bon+"'";
+                                      var q4 = "update `order` set discount="+discount+",harga_bayar_fix="+afterDisc+",jumlah_bayar="+afterDisc+" where no_bon='"+no_bon+"'";
                                       connection.query(q4,function(err,rows){
                                         if(err){
                                           res.json({"message":"err.. error on updating"});

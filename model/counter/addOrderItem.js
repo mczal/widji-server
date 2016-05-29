@@ -64,7 +64,7 @@ addOrderItem.prototype.handleRoutes = function(router,connection){
                                           if(luas == null || luas == undefined || luas == ''){
                                             //hereherehere
                                             var updatedPrice = (1*productPrice)+(oldPrice*1);
-                                            connection.query("update `order` set jumlah_bayar="+updatedPrice+" where no_bon='"+no_bon+"'",function(err,rows){
+                                            connection.query("update `order` set harga_bayar_fix="+updatedPrice+",jumlah_bayar="+updatedPrice+" where no_bon='"+no_bon+"'",function(err,rows){
                                               if(err){
                                                 res.json({"messahe":"err.. error on updating"});
                                               }else{
@@ -83,7 +83,7 @@ addOrderItem.prototype.handleRoutes = function(router,connection){
                                             var w = split[0].trim()*1;
                                             var h = split[1].trim()*1;
                                             var updatedPrice = (h*w*productPrice)+(oldPrice*1);
-                                            connection.query("update `order` set jumlah_bayar="+updatedPrice+" where no_bon='"+no_bon+"'",function(err,rows){
+                                            connection.query("update `order` set harga_bayar_fix="+updatedPrice+",jumlah_bayar="+updatedPrice+" where no_bon='"+no_bon+"'",function(err,rows){
                                               if(err){
                                                 res.json({"messahe":"err.. error on updating"});
                                               }else{
