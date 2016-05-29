@@ -14,3 +14,6 @@ connection.query(query,function(err,rows){
     }
   }
 });
+var q1 = "delete `order_item` where product_id="+idProduct;
+var q2 = "delete `product_material` where product_id="+idProduct;
+var q3 = "delete `product` where id="+idProduct;

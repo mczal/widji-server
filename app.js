@@ -35,6 +35,8 @@ var addNewProductModel = require("./model/admin/addNewProduct.js");
 var changeAvailabilityProductModel = require("./model/admin/changeAvailabilityProduct.js");
 var addProductMaterialModel = require("./model/admin/addProductMaterial.js");
 var getProductDetailModel = require("./model/admin/getProductDetail.js");
+var removeProductModel = require("./model/admin/removeProduct.js");
+var editProductModel = require("./model/admin/editProduct.js");
 
 var createOrderModel = require("./model/counter/createOrder.js");
 var addOrderItemModel = require("./model/counter/addOrderItem.js");
@@ -213,6 +215,8 @@ connect.prototype.configureExpress = function(connection) {
 			var changeAvailabilityProduct = new changeAvailabilityProductModel(router,connection);
 			var addProductMaterial = new addProductMaterialModel(router,connection);
 			var getProductDetail = new getProductDetailModel(router,connection);
+			var removeProduct = new removeProductModel(router,connection);
+			var editProduct = new editProductModel(router,connection);
 
 			var createOrder = new createOrderModel(router,connection);
 			var addOrderItem = new addOrderItemModel(router,connection);

@@ -23,11 +23,43 @@ deleteCustomer.prototype.handleRoutes = function(router,connection){
             if(rows.length == 1){
               if(rows[0].id_role == 1){
                 var q1 = "delete from `customer` where id="+idCustomer;
-                connection.query(q1,function(err,rows){
+                var q2 = "select id from `order` where customer_id="+idCustomer;
+                connection.query(q2,function(err,rows){
                   if(err){
-                    res.json({"message":"err.. error on deleting query","q":q1});
+                    res.json({"message":"err.. error on selecting order qr"});
                   }else{
-                    res.json({"message":"success on deleting customer","error":"success"});
+                    if(rows.length>0){
+                      var idOrder = rows[0].id;
+                      var q3 = "delete from `order_item` where order_id="+idOrder;
+                      connection.query(q3,function(err,rows){
+                        if(err){
+                          res.json({"message":"err.. error on delete order_item query"});
+                        }else{
+                          var q4 = "delete from `order` where id="+idOrder;
+                          connection.query(q4,function(err,rows){
+                            if(err){
+                              res.json({"message":"err.. error on delete order query"});
+                            }else{
+                              connection.query(q1,function(err,rows){
+                                if(err){
+                                  res.json({"message":"err.. error on delete customer query"});
+                                }else{
+                                  res.json({"message":"success delete customer #"+idCustomer,"code":"w/or"});
+                                }
+                              });
+                            }
+                          });
+                        }
+                      });
+                    }else{
+                      connection.query(q1,function(err,rows){
+                        if(err){
+                          res.json({"message":"err.. error on delete customer query"});
+                        }else{
+                          res.json({"message":"success delete customer #"+idCustomer,"code":"!w/or"});
+                        }
+                      });
+                    }
                   }
                 });
               }else{
