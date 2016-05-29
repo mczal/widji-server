@@ -23,10 +23,10 @@ earningsReportDay.prototype.handleRoutes = function(router,connection){
           }else{
             tahun = tahun.substr(2,3);
             var cond_bon = tahun+""+bulan+""+tanggal;
-            var q1 = "select id,no_bon,harga_bayar_fix-jumlah_bayar as paid,CASE  from `order` where no_bon like '"+cond_bon+"%' and jumlah_bayar <> harga_bayar_fix";
+            var q1 = "select id,no_bon,harga_bayar_fix-jumlah_bayar as paid,CASE WHEN jumlah_bayar>0 and jumlah_bayar<harga_bayar_fix then 'DP' WHEN jumlah_bayar=0 and harga_bayar_fix>0 THEN 'LUNAS' END as payment_status from `order` where no_bon like '"+cond_bon+"%' and jumlah_bayar <> harga_bayar_fix";
             connection.query(q1,function(err,rows){
               if(err){
-                res.json({"message":"err.. error on selecting query"});
+                res.json({"message":"err.. error on selecting query","q1":q1});
               }else{
                 if(rows.length>0){
                   res.json({"message":"success","tanggal":tanggal+" "+bulan+" "+tahun,"content":rows});

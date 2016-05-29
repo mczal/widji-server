@@ -1,0 +1,59 @@
+DELIMITER $$
+CREATE PROCEDURE associateStocksReport(IN noBonLike varchar)
+BEGIN	
+
+	DECLARE finished INTEGER DEFAULT 0;
+	DECLARE finished1 INTEGER DEFAULT 0;
+	
+	--
+	DECLARE idOrder INT DEFAULT 0;
+	DECLARE idOrderItem INT DEFAULT 0;
+	DECLARE orderItemQuantity DEFAULT 0;
+	--
+	
+	DECLARE idMaterial INT DEFAULT 0 ;
+	DECLARE materialQuantityUsed INT DEFAULT 0;
+	
+	DECLARE tempQuantity INT DEFAULT 0;
+	DECLARE tempMaterialName VARCHAR(30);
+	
+	--wkwk
+	DECLARE myOrderCursor CURSOR FOR
+	SELECT order_item.product_id,order_item.quantity from `order` join `order_item` on order.id=order_item.order_id where order.jumlah_bayar <> order.harga_bayar_fix and order.no_bon like CONCAT(noBonLike , '%');	
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished1 = 1;
+	OPEN myOrderCursor;
+	
+	
+	DECLARE myCursor CURSOR FOR 
+ 	SELECT DISTINCT material_id,material_quantity_used from `product_material` where product_id = idProduct;
+
+	DECLARE CONTINUE HANDLER 
+        FOR NOT FOUND SET finished = 1;
+
+	OPEN myCursor;
+
+	get_material: LOOP
+ 
+		FETCH myCursor INTO idMaterial,materialQuantityUsed;
+
+		IF finished = 1 THEN 
+			LEAVE get_material;
+		END IF;
+		--
+		SELECT quantity INTO tempQuantity, material_name INTO tempMaterialName  from `material` where id_material = idMaterial;
+		IF tempQuantity < (materialQuantityUsed*quantityz) THEN
+			INSERT INTO `stock_monitoring` (id_material,material_name,status)
+			VALUES (idMaterial,tempMaterialName,-1);
+		ELSE
+			UPDATE `material` SET quantity = tempQuantity-materialQuantityUsed where id_material = idMaterial;
+				
+			INSERT INTO `stock_monitoring` (id_material,material_name,status)
+			VALUES (idMaterial,@tempMaterialName,1);
+		END IF;
+
+    END LOOP get_material;
+	
+	CLOSE myCursor;
+
+END$$
+DELIMITER ;
