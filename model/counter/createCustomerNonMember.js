@@ -28,7 +28,7 @@ createCustomerNonMember.prototype.handleRoutes = function(router,connection){
               res.json({"message":"err.. error on session","query":query});
             }else{
               if(rows.length == 1){
-                if(rows[0].id_role == 2){
+                if(rows[0].id_role == 2 || rows[0].id_role == 1){
                   connection.query("insert into `customer` (name,phone) values('"+name+"','"+phone+"')",function(err,rows){
                     if(err){
                       res.json({"m3ssage":"err.. error on inserting"});

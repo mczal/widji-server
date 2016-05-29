@@ -29,7 +29,7 @@ createOrder.prototype.handleRoutes = function(router,connection){
               if(rows.length>0){
                 if(rows.length == 1){
                   //role id for user normal(counter) = 2
-                  if(rows[0].id_role == 2){
+                  if(rows[0].id_role == 2 || rows[0].id_role == 1){
                     var date = new Date();
                     var nomorBon = date.getFullYear().toString().substr(2)+""+date.getMonth()+""+date.getDate()+""+date.getHours()+""+date.getMinutes()+""+date.getSeconds()+""+date.getMilliseconds();
                     //res.json({"month":date.getMonth(),"date":date.getDate(),"year":date.getFullYear().toString().substr(2),"milisecond":date.getMilliseconds(),"hour":date.getHours(),"minute":date.getMinutes(),"seconds":date.getSeconds(),"nomorbon":nomorBon});

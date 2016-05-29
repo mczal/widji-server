@@ -25,7 +25,7 @@ getAllOrderItem.prototype.handleRoutes = function(router,connection){
             if(rows.length>0){
               if(rows.length==1){
                 // role kasir adalah role counter juga... = 2
-                if(rows[0].id_role == 2){
+                if(rows[0].id_role == 2 || rows[0].id_role == 1){
                   //must lookup jumlahbayar in order and name in order
                   connection.query("select name,jumlah_bayar,customer_id,created_at,tanggal_pengambilan,jam_pengambilan,keterangan,status from `order` where no_bon='"+no_bon+"'",function(err,rows){
                     if(err){

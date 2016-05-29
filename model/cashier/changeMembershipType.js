@@ -25,7 +25,7 @@ changeMembershipType.prototype.handleRoutes = function(router,connection){
               res.json({"message":"err.. error on session","query":query});
             }else{
               if(rows.length == 1){
-                if(rows[0].id_role == 2){
+                if(rows[0].id_role == 2 || rows[0].id_role == 1){
                   //get membership info
                   var q01 = "select * from `membership` where id="+membershipId;
                   connection.query(q01,function(err,rows){

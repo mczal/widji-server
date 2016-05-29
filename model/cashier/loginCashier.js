@@ -29,7 +29,7 @@ loginCashier.prototype.handleRoutes = function(router,connection,md5){
             res.json({"message":"err.. error on query.."});
           }else{
             if(rows.length>0){
-              if(rows[0].id_role == 2){
+              if(rows[0].id_role == 2 || rows[0].id_role == 1){
                 if(md5(password) == rows[0].password){
                   var code = generateUniqueCode();
                   //check if user already have session

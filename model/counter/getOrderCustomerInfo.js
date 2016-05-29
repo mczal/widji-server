@@ -23,7 +23,7 @@ getOrderCustomerInfo.prototype.handleRoutes = function(router,connection){
             res.json({"message":"err.. error on session","query":query});
           }else{
             if(rows.length == 1){
-              if(rows[0].id_role == 2){
+              if(rows[0].id_role == 2 || rows[0].id_role == 1){
                 connection.query("select order.name,customer.phone from `order` join `customer` on order.customer_id=customer.id where order.no_bon='"+no_bon+"'",function(err,rows){
                   if(err){
                     res.json({"messsage":"err.. error on selecting"});

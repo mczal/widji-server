@@ -37,7 +37,7 @@ registerMemberOnly.prototype.handleRoutes = function(router,connection){
                     res.json({"message":"err.. error on session","query":query});
                   }else{
                     if(rows.length == 1){
-                      if(rows[0].id_role == 2){
+                      if(rows[0].id_role == 2 || rows[0].id_role == 1){
                         //STEP 0. Get Membership information
                         var q00 = "select * from `membership` where id="+membershipId;
                         connection.query(q00,function(err,rows){

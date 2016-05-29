@@ -41,7 +41,7 @@ addOrderItem.prototype.handleRoutes = function(router,connection){
                     }else{
                       if(rows.length>0){
                         if(rows.length==1){
-                          if(rows[0].id_role == 2){
+                          if(rows[0].id_role == 2 || rows[0].id_role == 1){
                             //must check product price and sum it to `order`
                               //1. get product price from idProduct
                               connection.query("select price from `product` where id = "+idProduct,function(err,rows){

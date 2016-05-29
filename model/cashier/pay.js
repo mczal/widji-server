@@ -25,7 +25,7 @@ pay.prototype.handleRoutes = function(router,connection){
               res.json({"message":"err.. error on session","query":query});
             }else{
               if(rows.length == 1){
-                if(rows[0].id_role == 2){
+                if(rows[0].id_role == 2 || rows[0].id_role == 1){
                    //STEP 1. select jumlah bayar di order_id
                    connection.query("select jumlah_bayar from `order` where no_bon='"+no_bon+"'",function(err,rows){
                      if(err){

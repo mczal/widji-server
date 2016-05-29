@@ -46,7 +46,7 @@ login.prototype.handleRoutes=function(router,connection,md5){
                         res.json({"message":"err.. error ons selecting role"});
                       }else{
                         if(rows.length>0){
-                          if(rows[0].role_name == 'user'){
+                          if(rows[0].role_name == 'user' || rows[0].role_name == 'admin'){
                             //herehere
                             connection.query("select id_counter,ip_addrs,statusz,id_user from `counter` where counter_name = '"+myCounter+"'",function(err,rows){
                               if(err){

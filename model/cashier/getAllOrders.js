@@ -20,7 +20,7 @@ getAllOrders.prototype.handleRoutes = function(router,connection){
             if(rows.length == 1){
               //cashier = user counter idrole -> 2
               //ambil order yang masih belum dibaayar aja : status = 0
-              if(rows[0].id_role == 2){
+              if(rows[0].id_role == 2 || rows[0].id_role == 1){
                 var q = "select order.name,order.no_bon,order.created_at,order.status,order.jumlah_bayar from `order` where order.status = 0 order by created_at desc";
                 connection.query(q,function(err,rows){
                   if(err){

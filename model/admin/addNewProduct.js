@@ -60,7 +60,7 @@ addNewProduct.prototype.handleRoutes = function(router,connection){
                         var q1 ="-1";
                         if(imgbase64 == null || imgbase64 == undefined || imgbase64 == ''){
                           imgbase64 = '';
-                          q1 = "insert into `product` (category_id,media,size,status,weight,price) values ("+idCategory+",'"+media+"','"+size+"',"+1+","+weight+","+price+")";
+                          q1 = "insert into `product` (category_id,media,size,status,weight,price) values ("+idCategory+",'"+media+"','"+size+"',"+1+",'"+weight+"',"+price+")";
                           connection.query(q1,function(err,rows){
                             if(err){
                               res.json({"message":"err.. error on inserting new product","query":q1});

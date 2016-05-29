@@ -32,7 +32,7 @@ logout.prototype.handleRoutes = function(router,connection,md5){
                   }else{
                     if(rows.length>0){
                       var roleName = rows[0].role_name;
-                      if(roleName == "user"){
+                      if(roleName == "user" || roleName == "admin"){
                         connection.query("update `counter` set statusz=0,id_user=null where id_user="+idUser,function(err,rows){
                           if(err){
                             res.json({"message":"err.. error on updating counter"});

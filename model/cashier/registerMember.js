@@ -37,7 +37,7 @@ registerMember.prototype.handleRoutes = function(router,connection){
                   res.json({"message":"err.. error on session","query":query});
                 }else{
                   if(rows.length == 1){
-                    if(rows[0].id_role == 2){
+                    if(rows[0].id_role == 2 || rows[0].id_role == 1){
                       //---
                       //check user's availability
                       connection.query("select name,membership_id from `customer` where id="+idCustomer,function(err,rows){

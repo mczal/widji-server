@@ -11,13 +11,14 @@ getProductDetail.prototype.handleRoutes = function(router,connection){
     if(idProduct == null || idProduct == undefined || idProduct == ''){
       res.json({"message":"err.. no params received"});
     }else{
-      var q1 = "select product.id as id_product,product_category.name as category_name,product.media as media,product.size as size,product.status as product_status,product.weight as weight,product.imgbase64 as product_img,product.price as product_price from `product` join `product_category` on product.category_id=product_category.id where product.id="+idProduct;
+      var q1 = "select product.id as id_product,product_category.id as category_id,product.media as media,product.size as size,product.status as product_status,product.weight as weight,product.imgbase64 as product_img,product.price as product_price from `product` join `product_category` on product.category_id=product_category.id where product.id="+idProduct;
       connection.query(q1,function(err,rows){
         if(err){
           res.json({"message":"err.. error on selecting","q1":q1});
         }else{
           if(rows.length>0){
-            var categoryName = rows[0].category_name;
+            // var categoryName = rows[0].category_name;
+            var categoryId = rows[0].category_id;
             var productMedia = rows[0].media;
             var productSize = rows[0].size;
             var productStatus = rows[0].product_status;
@@ -28,7 +29,7 @@ getProductDetail.prototype.handleRoutes = function(router,connection){
               if(err){
                 res.json({"message":"err.. error on selcting"});
               }else{
-                res.json({"message":"success on selecting","error":"success","idProduct":idProduct,"categoryName":categoryName,"productMedia":productMedia,"productSize":productSize,"productStatus":productStatus,"productWeight":productWeight,"productImg":productImg,"productPrice":productPrice,"content":rows});
+                res.json({"message":"success on selecting","error":"success","idProduct":idProduct,"categoryId":categoryId,"productMedia":productMedia,"productSize":productSize,"productStatus":productStatus,"productWeight":productWeight,"productImg":productImg,"productPrice":productPrice,"content":rows});
               }
             });
           }else{
