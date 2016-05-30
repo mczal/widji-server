@@ -15,7 +15,14 @@ changeStatusToOnProgress.prototype.handleRoutes = function(router,connection){
       if(worker == null || worker == undefined || worker == ''){
         res.json({"message":"err.. no params w rec"});
       }else{
-        var query = "update `order` SET status_pengerjaan=1,worker='"+worker+"' where no_bon='"+no_bon+"'";
+        var myDate = new Date();
+        var year = myDate.getFullYear();
+        var month = myDate.getMonth();
+        var date = myDate.getDate();
+        var hour = myDate.getHours();
+        var minute = myDate.getMinutes();
+
+        var query = "update `order` SET updated_at = '"+year+"-"+month+"-"+date+" "+hour+":"+minute+"',status_pengerjaan=1,worker='"+worker+"' where no_bon='"+no_bon+"'";
         connection.query(query,function(err,rows){
           if(err){
             res.json({"message":"err.. error on query update","error":"error"});

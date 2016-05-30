@@ -12,7 +12,14 @@ changeStatusToDone.prototype.handleRoutes = function(router,connection){
     if(no_bon == null || no_bon == undefined || no_bon == '' || laci == null || laci == undefined || laci == '' ){
       res.json({"message":"err.. no params received"});
     }else{
-      var query = "update `order` set status_pengerjaan=2,laci='"+laci+"' where no_bon = '"+no_bon+"'";
+      var myDate = new Date();
+      var year = myDate.getFullYear();
+      var month = myDate.getMonth();
+      var date = myDate.getDate();
+      var hour = myDate.getHours();
+      var minute = myDate.getMinutes();
+
+      var query = "update `order` set updated_at = '"+year+"-"+month+"-"+date+" "+hour+":"+minute+"',status_pengerjaan=2,laci='"+laci+"' where no_bon = '"+no_bon+"'";
       connection.query(query,function(err,rows){
         if(err){
           res.json({"message":"err.. error on updating query"});

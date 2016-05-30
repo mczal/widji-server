@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2016 at 10:06 AM
+-- Generation Time: May 30, 2016 at 07:19 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -76,6 +76,79 @@ label1: LOOP
 CLOSE myCursor;
 
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `inner_loop_stocks_report`(IN `productId` INT, IN `orderItemQuantity` INT, IN `noBon` VARCHAR(50), IN `luasOuter` VARCHAR(50))
+    NO SQL
+BEGIN
+
+
+DECLARE idMaterial INT DEFAULT 0;
+DECLARE materialQuantityUsed INT DEFAULT 0;
+DECLARE luasWidth INT DEFAULT 0;
+DECLARE luasHeight INT DEFAULT 0;
+DECLARE luasInt INT DEFAULT 0;	
+DECLARE finished INTEGER DEFAULT 0;
+DECLARE myCursor CURSOR FOR SELECT DISTINCT material_id,material_quantity_used from `product_material` where product_id = productId;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;			
+OPEN myCursor;
+			
+get_material: LOOP
+
+	FETCH myCursor INTO idMaterial,materialQuantityUsed;
+	IF finished = 1 THEN 
+		CLOSE myCursor;
+		LEAVE get_material;
+	END IF;
+	IF luasOuter IS NOT NULL THEN
+		set luasWidth=SUBSTRING_INDEX(luasOuter, 'x', 1);
+		set luasHeight=SUBSTRING_INDEX(luasOuter, 'x', -1);
+		set luasInt = luasWidth*luasHeight;
+		INSERT INTO `used_material`(material_id,quantity,no_bon) values(idMaterial,materialQuantityUsed*orderItemQuantity*luasInt,noBon);
+	ELSE
+		INSERT INTO `used_material`(material_id,quantity,no_bon) values(idMaterial,materialQuantityUsed*orderItemQuantity,noBon);
+	END IF;
+
+END LOOP get_material;
+
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `stocks_report`(IN `noBonLike` VARCHAR(30))
+    NO SQL
+BEGIN
+	
+	
+		DECLARE finished_1 INTEGER DEFAULT 0;
+		
+		--
+		DECLARE productId INT DEFAULT 0;
+		DECLARE orderItemQuantity INT DEFAULT 0;
+		DECLARE noBon VARCHAR(20);
+		DECLARE luasOuter VARCHAR(50);
+		--
+		
+		DECLARE myOrderCursor CURSOR FOR
+		SELECT order_item.product_id as idProduct,order_item.quantity as quantityOrderItem,order.no_bon,order_item.luas from `order` join `order_item` on order.id=order_item.order_id where order.jumlah_bayar <> order.harga_bayar_fix and date(order.updated_at) = noBonLike and order.status_pengerjaan=2;	
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished_1 = 1;
+		
+
+		OPEN myOrderCursor;
+		get_product: LOOP
+
+
+		FETCH myOrderCursor INTO productId,orderItemQuantity,noBon,luasOuter;
+		if finished_1 = 1 THEN
+			CLOSE myOrderCursor;
+			LEAVE get_product;	
+		END IF;
+		--
+		call inner_loop_stocks_report(productId,orderItemQuantity,noBon,luasOuter);		
+		--
+		END LOOP get_product;
+	
+
+	
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `test_proc`(IN `idProduct` INT, IN `quantityz` INT, OUT `statusz` INT, IN `idOrderItem` INT)
@@ -363,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `order` (
 
 INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`, `status_pengerjaan`, `worker`, `laci`, `harga_bayar_fix`) VALUES
 (1, '16422223410466', '2016-05-22 15:34:10', '2016-05-22 15:34:10', 0, 'izal', 1, NULL, NULL, NULL, 0, NULL, 0, NULL, NULL, 100),
-(2, '164222322790', '2016-05-22 16:22:07', '2016-05-22 16:22:07', 0, 'izal1', 2, NULL, NULL, NULL, 4000, NULL, 0, NULL, NULL, 10000);
+(2, '164222322790', '2016-05-22 16:22:07', '2016-05-22 16:22:07', 0, 'izal1', 2, NULL, NULL, NULL, 10000, NULL, 0, NULL, NULL, 10000);
 
 -- --------------------------------------------------------
 
@@ -512,6 +585,20 @@ CREATE TABLE IF NOT EXISTS `stock_monitoring` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `used_material`
+--
+
+CREATE TABLE IF NOT EXISTS `used_material` (
+  `id` int(11) NOT NULL,
+  `material_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `no_bon` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -652,6 +739,12 @@ ALTER TABLE `stock_monitoring`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `used_material`
+--
+ALTER TABLE `used_material`
+  ADD PRIMARY KEY (`id`), ADD KEY `material_id` (`material_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -745,6 +838,11 @@ ALTER TABLE `session`
 -- AUTO_INCREMENT for table `stock_monitoring`
 --
 ALTER TABLE `stock_monitoring`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `used_material`
+--
+ALTER TABLE `used_material`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user`

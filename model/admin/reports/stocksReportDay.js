@@ -21,9 +21,36 @@ stocksReportDay.prototype.handleRoutes = function(router,connection){
           if(tahun == null || tahun == undefined || tahun == ''){
             res.json({"message":"err.. no param thn received"});
           }else{
-            tahun = tahun.substr(2,3);
-            var cond_bon = tahun+""+bulan+""+tanggal;
-            var q1 = "select ";
+            // tahun = tahun.substr(2,3);
+            var dateNow = tahun+"-"+bulan+"-"+tanggal;
+            var q1 = "CALL stocks_report('"+dateNow+"')";
+            connection.query(q1,function(err,rows){
+              if(err){
+                res.json({"message":"err.. error on call stocks procedure","err":err,"q1":q1});
+              }else{
+                // res.json({"message":"success","q1":q1,"content":rows});
+                var q2 = "select * from `used_material` where date(created_at) = '"+dateNow+"'";
+                // var myDate = new Date();
+                // var year = myDate.getFullYear();
+                // var month = myDate.getMonth();
+                // var date = myDate.getDate();
+                // var hour = myDate.getHours();
+                // var minute = myDate.getMinutes();
+                // var q2 = "update `order` set updated_at = '"+year+"-"+month+"-"+date+" "+hour+":"+minute+"'";
+                connection.query(q2,function(err,rows){
+                  if(err){
+                    res.json({"message":"err.. error on selectiong material used query","q1":q1,"q2":q2});
+                  }else{
+                    if(rows.length>0){
+                      res.json({"message":"success","q1":q1,"q2":q2,"content":rows});
+                    }else{
+                      res.json({"message":"success : no used materials for today ; no rows","q1":q1,"q2":q2});
+                    }
+
+                  }
+                });
+              }
+            });
           }
         }
       }
