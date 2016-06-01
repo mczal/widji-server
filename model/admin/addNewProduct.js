@@ -100,7 +100,7 @@ addNewProduct.prototype.handleRoutes = function(router,connection){
                             }else{
                               console.log("message success upload img");
                               var imgbase64_database = "http://localhost/widji-server/"+path+"/"+filename;
-                              q1 = "insert into `product` (category_id,media,size,status,weight,price,imgbase64) values ("+idCategory+",'"+media+"','"+size+"',"+1+","+weight+","+price+",'"+imgbase64_database+"')";
+                              q1 = "insert into `product` (category_id,media,size,status,weight,price,imgbase64) values ("+idCategory+",'"+media+"','"+size+"',"+1+",'"+weight+"',"+price+",'"+imgbase64_database+"')";
                               connection.query(q1,function(err,rows){
                                 if(err){
                                   res.json({"message":"err.. error on inserting new product","query":q1});

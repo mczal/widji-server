@@ -44,7 +44,7 @@ deleteItemOrder.prototype.handleRoutes = function(router,connection){
                         if(rows.length>0){
                           var oldTotalPrice = rows[0].jumlah_bayar;
           //STEP 4. update jumlah bayar on order
-                          var q4 = "update `order` set harga_bayar_fix="+updatedPrice+",jumlah_bayar="+((oldTotalPrice*1)-(itemPrice*1))+" where no_bon='"+no_bon+"'";
+                          var q4 = "update `order` set harga_bayar_fix="+((oldTotalPrice*1)-(itemPrice*1))+",jumlah_bayar="+((oldTotalPrice*1)-(itemPrice*1))+" where no_bon='"+no_bon+"'";
                           connection.query(q4,function(err,rows){
                             if(err){
                               res.json({"message":"err.. error on updating order","error":"error"});

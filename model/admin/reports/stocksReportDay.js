@@ -22,6 +22,7 @@ stocksReportDay.prototype.handleRoutes = function(router,connection){
             res.json({"message":"err.. no param thn received"});
           }else{
             // tahun = tahun.substr(2,3);
+            bulan = (bulan*1)+1;
             var dateNow = tahun+"-"+bulan+"-"+tanggal;
             var q1 = "CALL stocks_report('"+dateNow+"')";
             connection.query(q1,function(err,rows){
