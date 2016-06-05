@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2016 at 07:04 PM
+-- Generation Time: Jun 05, 2016 at 06:50 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -82,6 +82,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `inner_loop_stocks_report`(IN `produ
     NO SQL
 BEGIN
 
+DECLARE materialCode VARCHAR (30);
+DECLARE materialName VARCHAR (30);
 
 DECLARE idMaterial INT DEFAULT 0;
 DECLARE usedIdExist INT DEFAULT -1;
@@ -90,13 +92,13 @@ DECLARE luasWidth INT DEFAULT 0;
 DECLARE luasHeight INT DEFAULT 0;
 DECLARE luasInt INT DEFAULT 0;	
 DECLARE finished INTEGER DEFAULT 0;
-DECLARE myCursor CURSOR FOR SELECT DISTINCT material_id,material_quantity_used from `product_material` where product_id = productId;
+DECLARE myCursor CURSOR FOR SELECT DISTINCT material_id,material_quantity_used,material_code,material_name from `product_material` join `material` on product_material.material_id=material.id_material where product_material.product_id = productId;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;			
 OPEN myCursor;
 			
 get_material: LOOP
 	set usedIdExist = -1;
-	FETCH myCursor INTO idMaterial,materialQuantityUsed;
+	FETCH myCursor INTO idMaterial,materialQuantityUsed,materialCode,materialName;
 	IF finished = 1 THEN 
 		CLOSE myCursor;
 		LEAVE get_material;
@@ -109,9 +111,9 @@ get_material: LOOP
 			set luasWidth=SUBSTRING_INDEX(luasOuter, 'x', 1);
 			set luasHeight=SUBSTRING_INDEX(luasOuter, 'x', -1);
 			set luasInt = luasWidth*luasHeight;
-			INSERT INTO `used_material`(material_id,quantity,no_bon) values(idMaterial,materialQuantityUsed*orderItemQuantity*luasInt,noBon);
+			INSERT INTO `used_material`(material_id,quantity,no_bon,material_code,material_name) values(idMaterial,materialQuantityUsed*orderItemQuantity*luasInt,noBon,materialCode,materialName);
 		ELSE
-			INSERT INTO `used_material`(material_id,quantity,no_bon) values(idMaterial,materialQuantityUsed*orderItemQuantity,noBon);
+			INSERT INTO `used_material`(material_id,quantity,no_bon,material_code,material_name) values(idMaterial,materialQuantityUsed*orderItemQuantity,noBon,materialCode,materialName);
 		END IF;
 	END IF;
 
@@ -441,7 +443,7 @@ CREATE TABLE IF NOT EXISTS `order` (
 
 INSERT INTO `order` (`id`, `no_bon`, `created_at`, `updated_at`, `status`, `name`, `customer_id`, `tanggal_pengambilan`, `jam_pengambilan`, `keterangan`, `jumlah_bayar`, `discount`, `status_pengerjaan`, `worker`, `laci`, `harga_bayar_fix`) VALUES
 (1, '16422223410466', '2016-05-22 15:34:10', '2016-06-01 15:34:10', 0, 'izal', 1, NULL, NULL, NULL, 0, NULL, 2, NULL, NULL, 100),
-(2, '164222322790', '2016-05-22 16:22:07', '2016-06-01 16:22:07', 0, 'izal1', 2, NULL, NULL, NULL, 10000, NULL, 0, NULL, NULL, 10000);
+(2, '164222322790', '2016-05-22 16:22:07', '2016-06-05 16:22:07', 0, 'izal1', 2, NULL, NULL, NULL, 4000, NULL, 2, NULL, NULL, 10000);
 
 -- --------------------------------------------------------
 
@@ -456,14 +458,15 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   `quantity` int(11) NOT NULL,
   `price` double NOT NULL,
   `luas` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_item`
 --
 
 INSERT INTO `order_item` (`id`, `product_id`, `order_id`, `quantity`, `price`, `luas`) VALUES
-(1, 2, 1, 1, 100, '2x2');
+(1, 2, 1, 1, 100, '2x2'),
+(2, 2, 2, 1, 50, '1x2');
 
 -- --------------------------------------------------------
 
@@ -612,15 +615,17 @@ CREATE TABLE IF NOT EXISTS `used_material` (
   `material_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `no_bon` varchar(20) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `material_code` varchar(50) NOT NULL,
+  `material_name` varchar(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `used_material`
 --
 
-INSERT INTO `used_material` (`id`, `material_id`, `quantity`, `no_bon`, `created_at`) VALUES
-(1, 1, 20, '16422223410466', '2016-06-01 16:47:50');
+INSERT INTO `used_material` (`id`, `material_id`, `quantity`, `no_bon`, `created_at`, `material_code`, `material_name`) VALUES
+(4, 1, 10, '164222322790', '2016-06-05 04:40:04', 'mat cod', 'mat name');
 
 -- --------------------------------------------------------
 
@@ -829,7 +834,7 @@ ALTER TABLE `order`
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `product`
 --
@@ -869,7 +874,7 @@ ALTER TABLE `stock_monitoring`
 -- AUTO_INCREMENT for table `used_material`
 --
 ALTER TABLE `used_material`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `user`
 --
