@@ -19,7 +19,7 @@ changeStatusToDone.prototype.handleRoutes = function(router,connection){
       var hour = myDate.getHours();
       var minute = myDate.getMinutes();
 
-      var query = "update `order` set updated_at = '"+year+"-"+month+"-"+date+" "+hour+":"+minute+"',status_pengerjaan=2,laci='"+laci+"' where no_bon = '"+no_bon+"'";
+      var query = "update `order` set updated_at = '"+year+"-"+(month*1+1)+"-"+date+" "+hour+":"+minute+"',status_pengerjaan=2,laci='"+laci+"' where no_bon = '"+no_bon+"'";
       connection.query(query,function(err,rows){
         if(err){
           res.json({"message":"err.. error on updating query"});

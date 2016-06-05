@@ -22,7 +22,7 @@ changeStatusToOnProgress.prototype.handleRoutes = function(router,connection){
         var hour = myDate.getHours();
         var minute = myDate.getMinutes();
 
-        var query = "update `order` SET updated_at = '"+year+"-"+month+"-"+date+" "+hour+":"+minute+"',status_pengerjaan=1,worker='"+worker+"' where no_bon='"+no_bon+"'";
+        var query = "update `order` SET updated_at = '"+year+"-"+(month*1+1)+"-"+date+" "+hour+":"+minute+"',status_pengerjaan=1,worker='"+worker+"' where no_bon='"+no_bon+"'";
         connection.query(query,function(err,rows){
           if(err){
             res.json({"message":"err.. error on query update","error":"error"});
