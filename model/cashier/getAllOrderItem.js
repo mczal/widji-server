@@ -41,7 +41,7 @@ getAllOrderItem.prototype.handleRoutes = function(router,connection){
                         var keterangan = rows[0].keterangan;
                         var status = rows[0].status;
 
-                        var q = "select order_item.id as id_order_item,product.id as id_product,product_category.name,product.media,product.size,product.weight,order_item.quantity,order_item.price from `order` join `order_item` on order.id=order_item.order_id join `product` on order_item.product_id=product.id join `product_category` on product.category_id=product_category.id where order.no_bon = '"+no_bon+"'";
+                        var q = "select order_item.id as id_order_item,product.id as id_product,product.category_id as category_id,product_category.name,product.media,product.size,product.weight,order_item.quantity,order_item.price from `order` join `order_item` on order.id=order_item.order_id join `product` on order_item.product_id=product.id join `product_category` on product.category_id=product_category.id where order.no_bon = '"+no_bon+"' order by product.category_id ASC";
                         connection.query(q,function(err,rows){
                           if(err){
                             res.json({"message":"err.. error on selecting","error":"error"});
