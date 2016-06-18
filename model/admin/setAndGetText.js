@@ -84,7 +84,21 @@ setAndGetText.prototype.handleRoutes = function(router,connection,md5){
               }
             });
           }else{
-            res.json({"message":"err.. no rows"});
+            connection.query("select value from `display` where id_display=1",function(err,rows){
+              if(err){
+                res.json({"message":"err.. error on value"});
+              }else{
+                if(rows.length > 0){
+                  if(rows[0].value == null || rows[0].value == undefined){
+                    res.json({"message":"not success","text":" ","error":"not set (null or undefined)"});
+                  }else{
+                    res.json({"message":"success","text":rows[0].value});
+                  }
+                }else{
+                  res.json({"message":"not success","error":"no rows","text":" "})
+                }
+              }
+            });
           }
         }
       });
